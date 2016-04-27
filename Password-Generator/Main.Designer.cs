@@ -297,6 +297,7 @@
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.passGenButton);
             this.Controls.Add(this.passwordBox);
+            this.MinimumSize = new System.Drawing.Size(600, 480);
             this.Name = "Main";
             this.Text = "Password Generator";
             this.Load += new System.EventHandler(this.Main_Load);
