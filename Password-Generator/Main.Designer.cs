@@ -31,14 +31,14 @@
             this.passwordBox = new System.Windows.Forms.RichTextBox();
             this.passGenButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.checkBoxExcludeAmbiguous = new System.Windows.Forms.CheckBox();
-            this.checkBoxExcludeSimilar = new System.Windows.Forms.CheckBox();
-            this.checkBoxIncludeSymbols = new System.Windows.Forms.CheckBox();
-            this.checkBoxIncludeNumbers = new System.Windows.Forms.CheckBox();
-            this.checkBoxIncludeUpperCase = new System.Windows.Forms.CheckBox();
-            this.checkBoxIncludeLowerCase = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.checkBoxExcludeAmbiguous = new System.Windows.Forms.CheckBox();
+            this.checkBoxIncludeLowerCase = new System.Windows.Forms.CheckBox();
+            this.checkBoxExcludeSimilar = new System.Windows.Forms.CheckBox();
+            this.checkBoxIncludeSymbols = new System.Windows.Forms.CheckBox();
+            this.checkBoxIncludeUpperCase = new System.Windows.Forms.CheckBox();
+            this.checkBoxIncludeNumbers = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -79,66 +79,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(262, 175);
             this.panel1.TabIndex = 2;
-            // 
-            // checkBoxExcludeAmbiguous
-            // 
-            this.checkBoxExcludeAmbiguous.AutoSize = true;
-            this.checkBoxExcludeAmbiguous.Location = new System.Drawing.Point(6, 144);
-            this.checkBoxExcludeAmbiguous.Name = "checkBoxExcludeAmbiguous";
-            this.checkBoxExcludeAmbiguous.Size = new System.Drawing.Size(247, 17);
-            this.checkBoxExcludeAmbiguous.TabIndex = 12;
-            this.checkBoxExcludeAmbiguous.Text = "Exclude Ambiguous  { } [ ] ( ) / \\ \' \" ` ~ , ; : . < >";
-            this.checkBoxExcludeAmbiguous.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxExcludeSimilar
-            // 
-            this.checkBoxExcludeSimilar.AutoSize = true;
-            this.checkBoxExcludeSimilar.Location = new System.Drawing.Point(6, 121);
-            this.checkBoxExcludeSimilar.Name = "checkBoxExcludeSimilar";
-            this.checkBoxExcludeSimilar.Size = new System.Drawing.Size(256, 17);
-            this.checkBoxExcludeSimilar.TabIndex = 11;
-            this.checkBoxExcludeSimilar.Text = "Exclude Similar Characters           i, l, 1, L, o, 0, O";
-            this.checkBoxExcludeSimilar.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxIncludeSymbols
-            // 
-            this.checkBoxIncludeSymbols.AutoSize = true;
-            this.checkBoxIncludeSymbols.Location = new System.Drawing.Point(6, 98);
-            this.checkBoxIncludeSymbols.Name = "checkBoxIncludeSymbols";
-            this.checkBoxIncludeSymbols.Size = new System.Drawing.Size(237, 17);
-            this.checkBoxIncludeSymbols.TabIndex = 10;
-            this.checkBoxIncludeSymbols.Text = "Include Symbols:                              @#!$%^";
-            this.checkBoxIncludeSymbols.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxIncludeNumbers
-            // 
-            this.checkBoxIncludeNumbers.AutoSize = true;
-            this.checkBoxIncludeNumbers.Location = new System.Drawing.Point(6, 75);
-            this.checkBoxIncludeNumbers.Name = "checkBoxIncludeNumbers";
-            this.checkBoxIncludeNumbers.Size = new System.Drawing.Size(226, 17);
-            this.checkBoxIncludeNumbers.TabIndex = 9;
-            this.checkBoxIncludeNumbers.Text = "Include Numbers                              123... ";
-            this.checkBoxIncludeNumbers.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxIncludeUpperCase
-            // 
-            this.checkBoxIncludeUpperCase.AutoSize = true;
-            this.checkBoxIncludeUpperCase.Location = new System.Drawing.Point(6, 53);
-            this.checkBoxIncludeUpperCase.Name = "checkBoxIncludeUpperCase";
-            this.checkBoxIncludeUpperCase.Size = new System.Drawing.Size(227, 17);
-            this.checkBoxIncludeUpperCase.TabIndex = 8;
-            this.checkBoxIncludeUpperCase.Text = "Include Uppercase Characters         ABC...";
-            this.checkBoxIncludeUpperCase.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxIncludeLowerCase
-            // 
-            this.checkBoxIncludeLowerCase.AutoSize = true;
-            this.checkBoxIncludeLowerCase.Location = new System.Drawing.Point(6, 30);
-            this.checkBoxIncludeLowerCase.Name = "checkBoxIncludeLowerCase";
-            this.checkBoxIncludeLowerCase.Size = new System.Drawing.Size(224, 17);
-            this.checkBoxIncludeLowerCase.TabIndex = 7;
-            this.checkBoxIncludeLowerCase.Text = "Include Lowercase Characters         abc...";
-            this.checkBoxIncludeLowerCase.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -289,6 +229,66 @@
             this.comboBox1.Size = new System.Drawing.Size(94, 21);
             this.comboBox1.TabIndex = 0;
             // 
+            // checkBoxExcludeAmbiguous
+            // 
+            this.checkBoxExcludeAmbiguous.AutoSize = true;
+            this.checkBoxExcludeAmbiguous.Location = new System.Drawing.Point(6, 144);
+            this.checkBoxExcludeAmbiguous.Name = "checkBoxExcludeAmbiguous";
+            this.checkBoxExcludeAmbiguous.Size = new System.Drawing.Size(247, 17);
+            this.checkBoxExcludeAmbiguous.TabIndex = 12;
+            this.checkBoxExcludeAmbiguous.Text = "Exclude Ambiguous  { } [ ] ( ) / \\ \' \" ` ~ , ; : . < >";
+            this.checkBoxExcludeAmbiguous.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxIncludeLowerCase
+            // 
+            this.checkBoxIncludeLowerCase.AutoSize = true;
+            this.checkBoxIncludeLowerCase.Location = new System.Drawing.Point(6, 30);
+            this.checkBoxIncludeLowerCase.Name = "checkBoxIncludeLowerCase";
+            this.checkBoxIncludeLowerCase.Size = new System.Drawing.Size(224, 17);
+            this.checkBoxIncludeLowerCase.TabIndex = 7;
+            this.checkBoxIncludeLowerCase.Text = "Include Lowercase Characters         abc...";
+            this.checkBoxIncludeLowerCase.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxExcludeSimilar
+            // 
+            this.checkBoxExcludeSimilar.AutoSize = true;
+            this.checkBoxExcludeSimilar.Location = new System.Drawing.Point(6, 121);
+            this.checkBoxExcludeSimilar.Name = "checkBoxExcludeSimilar";
+            this.checkBoxExcludeSimilar.Size = new System.Drawing.Size(256, 17);
+            this.checkBoxExcludeSimilar.TabIndex = 11;
+            this.checkBoxExcludeSimilar.Text = "Exclude Similar Characters           i, l, 1, L, o, 0, O";
+            this.checkBoxExcludeSimilar.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxIncludeSymbols
+            // 
+            this.checkBoxIncludeSymbols.AutoSize = true;
+            this.checkBoxIncludeSymbols.Location = new System.Drawing.Point(6, 98);
+            this.checkBoxIncludeSymbols.Name = "checkBoxIncludeSymbols";
+            this.checkBoxIncludeSymbols.Size = new System.Drawing.Size(237, 17);
+            this.checkBoxIncludeSymbols.TabIndex = 10;
+            this.checkBoxIncludeSymbols.Text = "Include Symbols:                              @#!$%^";
+            this.checkBoxIncludeSymbols.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxIncludeUpperCase
+            // 
+            this.checkBoxIncludeUpperCase.AutoSize = true;
+            this.checkBoxIncludeUpperCase.Location = new System.Drawing.Point(6, 53);
+            this.checkBoxIncludeUpperCase.Name = "checkBoxIncludeUpperCase";
+            this.checkBoxIncludeUpperCase.Size = new System.Drawing.Size(227, 17);
+            this.checkBoxIncludeUpperCase.TabIndex = 8;
+            this.checkBoxIncludeUpperCase.Text = "Include Uppercase Characters         ABC...";
+            this.checkBoxIncludeUpperCase.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxIncludeNumbers
+            // 
+            this.checkBoxIncludeNumbers.AutoSize = true;
+            this.checkBoxIncludeNumbers.Location = new System.Drawing.Point(6, 75);
+            this.checkBoxIncludeNumbers.Name = "checkBoxIncludeNumbers";
+            this.checkBoxIncludeNumbers.Size = new System.Drawing.Size(226, 17);
+            this.checkBoxIncludeNumbers.TabIndex = 9;
+            this.checkBoxIncludeNumbers.Text = "Include Numbers                              123... ";
+            this.checkBoxIncludeNumbers.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -298,7 +298,7 @@
             this.Controls.Add(this.passGenButton);
             this.Controls.Add(this.passwordBox);
             this.Name = "Main";
-            this.Text = "Main";
+            this.Text = "Password Generator";
             this.Load += new System.EventHandler(this.Main_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
