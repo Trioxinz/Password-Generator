@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.passwordBox = new System.Windows.Forms.RichTextBox();
             this.passGenButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -293,10 +294,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 441);
+            this.ClientSize = new System.Drawing.Size(584, 442);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.passGenButton);
             this.Controls.Add(this.passwordBox);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(600, 480);
             this.Name = "Main";
             this.Text = "Password Generator";
