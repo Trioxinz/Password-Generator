@@ -95,6 +95,8 @@
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
+            "4",
+            "5",
             "6",
             "7",
             "8",
@@ -224,7 +226,10 @@
             "2048",
             "4096",
             "8192",
-            "16384"});
+            "16384",
+            "32768",
+            "65536",
+            "131072"});
             this.comboBox1.Location = new System.Drawing.Point(52, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(94, 21);
