@@ -19,11 +19,40 @@ namespace Password_Generator
             checkBoxIncludeLowerCase.Checked = true;
         }
 
+        private void textBoxSymbols_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '!' || e.KeyChar == '"' || e.KeyChar == '\\'||
+                e.KeyChar == ';' || e.KeyChar == '#' || e.KeyChar == '$' ||
+                e.KeyChar == '%' || e.KeyChar == '(' || e.KeyChar == '\''||
+                e.KeyChar == ')' || e.KeyChar == '&' || e.KeyChar == '*' ||
+                e.KeyChar == '+' || e.KeyChar == ',' || e.KeyChar == '-' ||
+                e.KeyChar == '.' || e.KeyChar == '/' || e.KeyChar == ':' ||
+                e.KeyChar == '<' || e.KeyChar == '>' || e.KeyChar == '=' ||
+                e.KeyChar == '?' || e.KeyChar == '[' || e.KeyChar == ']' ||
+                e.KeyChar == '@' || e.KeyChar == '^' || e.KeyChar == '_' ||
+                e.KeyChar == '{' || e.KeyChar == '}' || e.KeyChar == '|' ||
+                e.KeyChar == '`' || e.KeyChar == '~' || e.KeyChar == '\b')
+            {
+                if(!(textBoxSymbols.Text.Contains(e.KeyChar.ToString())))
+                {
+                    e.Handled = false;
+                }
+                else
+                {
+                    e.Handled = true;
+                }
+            }
+            else
+            {
+                e.Handled = true;
+            }
+        }
+
         private void passGenButton_Click(object sender, EventArgs e)
         {
-            if (!checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked && !checkBoxIncludeSymbols.Checked && !checkBoxIncludeNumbers.Checked)
+            if ((!checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked && !checkBoxIncludeSymbols.Checked && !checkBoxIncludeNumbers.Checked) || (checkBoxIncludeSymbols.Checked && textBoxSymbols.TextLength == 0 && !checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked && !checkBoxIncludeNumbers.Checked))
             {
-                MessageBox.Show("Error", "You need to select a type of character to include.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You need to select a type of character to include.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             string password = "";
@@ -102,35 +131,13 @@ namespace Password_Generator
             }
             if (checkBoxIncludeSymbols.Checked)
             {
-                array.Add("~");
-                array.Add("`");
-                array.Add("!");
-                array.Add("@");
-                array.Add("#");
-                array.Add("$");
-                array.Add("%");
-                array.Add("^");
-                array.Add("&");
-                array.Add("*");
-                array.Add("(");
-                array.Add(")");
-                array.Add("_");
-                array.Add("=");
-                array.Add("+");
-                array.Add("{");
-                array.Add("}");
-                array.Add("[");
-                array.Add("]");
-                array.Add("|");
-                array.Add("\\"); //need double \ for the string to take the \ char 
-                array.Add("/");
-                array.Add("?");
-                array.Add("<");
-                array.Add(">");
-                array.Add(",");
-                array.Add(".");
-                array.Add(";");
-                array.Add(":");
+                if(textBoxSymbols.TextLength > 0)
+                {
+                    for(int i = 0; i < textBoxSymbols.TextLength; i++)
+                    {
+                        array.Add(textBoxSymbols.Text.Substring(i, 1));
+                    }
+                }
             }
             if (checkBoxExcludeSimilar.Checked)
             {
