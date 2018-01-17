@@ -40,6 +40,7 @@
             this.checkBoxIncludeSymbols = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeUpperCase = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeNumbers = new System.Windows.Forms.CheckBox();
+            this.checkBoxNotAllowRepeat = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +58,7 @@
             // 
             // passGenButton
             // 
-            this.passGenButton.Location = new System.Drawing.Point(81, 193);
+            this.passGenButton.Location = new System.Drawing.Point(81, 212);
             this.passGenButton.Name = "passGenButton";
             this.passGenButton.Size = new System.Drawing.Size(120, 32);
             this.passGenButton.TabIndex = 1;
@@ -68,6 +69,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.checkBoxNotAllowRepeat);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.checkBoxExcludeAmbiguous);
@@ -78,7 +80,7 @@
             this.panel1.Controls.Add(this.checkBoxIncludeNumbers);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(262, 175);
+            this.panel1.Size = new System.Drawing.Size(262, 194);
             this.panel1.TabIndex = 2;
             // 
             // label1
@@ -295,6 +297,16 @@
             this.checkBoxIncludeNumbers.Text = "Include Numbers                              123... ";
             this.checkBoxIncludeNumbers.UseVisualStyleBackColor = true;
             // 
+            // checkBoxNotAllowRepeat
+            // 
+            this.checkBoxNotAllowRepeat.AutoSize = true;
+            this.checkBoxNotAllowRepeat.Location = new System.Drawing.Point(6, 167);
+            this.checkBoxNotAllowRepeat.Name = "checkBoxNotAllowRepeat";
+            this.checkBoxNotAllowRepeat.Size = new System.Drawing.Size(169, 17);
+            this.checkBoxNotAllowRepeat.TabIndex = 13;
+            this.checkBoxNotAllowRepeat.Text = "Dissallow Characters to repeat";
+            this.checkBoxNotAllowRepeat.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -327,5 +339,6 @@
         private System.Windows.Forms.CheckBox checkBoxIncludeNumbers;
         private System.Windows.Forms.CheckBox checkBoxIncludeUpperCase;
         private System.Windows.Forms.CheckBox checkBoxIncludeLowerCase;
+        private System.Windows.Forms.CheckBox checkBoxNotAllowRepeat;
     }
 }

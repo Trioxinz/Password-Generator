@@ -165,7 +165,21 @@ namespace Password_Generator
             for (int i = 0; i < length; i++)
             {
                 int j = rnd.Next(array.Count);
-                password = password + array[j].ToString();
+                if((checkBoxNotAllowRepeat.Checked) && (password.Length > 0))
+                {
+                    if(password.EndsWith(array[j].ToString()))
+                    {
+                        i--;
+                    }
+                    else
+                    {
+                        password = password + array[j].ToString();
+                    }
+                }
+                else
+                {
+                    password = password + array[j].ToString();
+                }
             }
             passwordBox.Text = password;
         }
