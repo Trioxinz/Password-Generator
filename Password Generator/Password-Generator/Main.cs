@@ -19,6 +19,16 @@ namespace Password_Generator
             checkBoxIncludeLowerCase.Checked = true;
         }
 
+        private void checkBoxNotAllowRepeat_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBoxNotAllowDuplicate.Enabled = false;
+        }
+
+        private void checkBoxNotAllowDuplicate_CheckedChanged(object sender, EventArgs e)
+        {
+            checkBoxNotAllowRepeat.Enabled = false;
+        }
+
         private void textBoxSymbols_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '!' || e.KeyChar == '"' || e.KeyChar == '\\'||
@@ -169,12 +179,27 @@ namespace Password_Generator
                 array.Remove("<");
                 array.Remove(">");
             }
+            if(checkBoxNotAllowDuplicate.Checked && array.Count < length)
+            {
+                length = array.Count;
+            }
             for (int i = 0; i < length; i++)
             {
                 int j = rnd.Next(array.Count);
                 if((checkBoxNotAllowRepeat.Checked) && (password.Length > 0))
                 {
                     if(password.EndsWith(array[j].ToString()))
+                    {
+                        i--;
+                    }
+                    else
+                    {
+                        password = password + array[j].ToString();
+                    }
+                }
+                if ((checkBoxNotAllowDuplicate.Checked) && (password.Length > 0))
+                {
+                    if (password.Contains(array[j].ToString()))
                     {
                         i--;
                     }

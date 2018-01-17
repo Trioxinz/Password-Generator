@@ -32,6 +32,7 @@
             this.passwordBox = new System.Windows.Forms.RichTextBox();
             this.passGenButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxNotAllowDuplicate = new System.Windows.Forms.CheckBox();
             this.textBoxSymbols = new System.Windows.Forms.TextBox();
             this.checkBoxNotAllowRepeat = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -59,7 +60,7 @@
             // 
             // passGenButton
             // 
-            this.passGenButton.Location = new System.Drawing.Point(81, 212);
+            this.passGenButton.Location = new System.Drawing.Point(81, 231);
             this.passGenButton.Name = "passGenButton";
             this.passGenButton.Size = new System.Drawing.Size(120, 32);
             this.passGenButton.TabIndex = 1;
@@ -70,6 +71,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.checkBoxNotAllowDuplicate);
             this.panel1.Controls.Add(this.textBoxSymbols);
             this.panel1.Controls.Add(this.checkBoxNotAllowRepeat);
             this.panel1.Controls.Add(this.label1);
@@ -82,8 +84,19 @@
             this.panel1.Controls.Add(this.checkBoxIncludeNumbers);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(262, 194);
+            this.panel1.Size = new System.Drawing.Size(262, 213);
             this.panel1.TabIndex = 2;
+            // 
+            // checkBoxNotAllowDuplicate
+            // 
+            this.checkBoxNotAllowDuplicate.AutoSize = true;
+            this.checkBoxNotAllowDuplicate.Location = new System.Drawing.Point(6, 190);
+            this.checkBoxNotAllowDuplicate.Name = "checkBoxNotAllowDuplicate";
+            this.checkBoxNotAllowDuplicate.Size = new System.Drawing.Size(172, 17);
+            this.checkBoxNotAllowDuplicate.TabIndex = 14;
+            this.checkBoxNotAllowDuplicate.Text = "Dissallow Duplicate Characters";
+            this.checkBoxNotAllowDuplicate.UseVisualStyleBackColor = true;
+            this.checkBoxNotAllowDuplicate.CheckedChanged += new System.EventHandler(this.checkBoxNotAllowDuplicate_CheckedChanged);
             // 
             // textBoxSymbols
             // 
@@ -100,10 +113,11 @@
             this.checkBoxNotAllowRepeat.AutoSize = true;
             this.checkBoxNotAllowRepeat.Location = new System.Drawing.Point(6, 167);
             this.checkBoxNotAllowRepeat.Name = "checkBoxNotAllowRepeat";
-            this.checkBoxNotAllowRepeat.Size = new System.Drawing.Size(233, 17);
+            this.checkBoxNotAllowRepeat.Size = new System.Drawing.Size(237, 17);
             this.checkBoxNotAllowRepeat.TabIndex = 13;
-            this.checkBoxNotAllowRepeat.Text = "Dissallow Characters to repeat progressively";
+            this.checkBoxNotAllowRepeat.Text = "Dissallow Characters to repeat consecutively";
             this.checkBoxNotAllowRepeat.UseVisualStyleBackColor = true;
+            this.checkBoxNotAllowRepeat.CheckedChanged += new System.EventHandler(this.checkBoxNotAllowRepeat_CheckedChanged);
             // 
             // label1
             // 
@@ -353,5 +367,6 @@
         private System.Windows.Forms.CheckBox checkBoxIncludeLowerCase;
         private System.Windows.Forms.CheckBox checkBoxNotAllowRepeat;
         private System.Windows.Forms.TextBox textBoxSymbols;
+        private System.Windows.Forms.CheckBox checkBoxNotAllowDuplicate;
     }
 }
