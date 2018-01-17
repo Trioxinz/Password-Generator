@@ -138,6 +138,7 @@ namespace Password_Generator
                 array.Remove("1");
                 array.Remove("l");
                 array.Remove("L");
+                array.Remove("|");
                 array.Remove("o");
                 array.Remove("O");
                 array.Remove("0");
