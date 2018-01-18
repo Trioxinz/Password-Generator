@@ -92,9 +92,9 @@
             this.checkBoxNotAllowDuplicate.AutoSize = true;
             this.checkBoxNotAllowDuplicate.Location = new System.Drawing.Point(6, 190);
             this.checkBoxNotAllowDuplicate.Name = "checkBoxNotAllowDuplicate";
-            this.checkBoxNotAllowDuplicate.Size = new System.Drawing.Size(172, 17);
+            this.checkBoxNotAllowDuplicate.Size = new System.Drawing.Size(257, 17);
             this.checkBoxNotAllowDuplicate.TabIndex = 14;
-            this.checkBoxNotAllowDuplicate.Text = "Dissallow Duplicate Characters";
+            this.checkBoxNotAllowDuplicate.Text = "Dissallow Duplicate Characters    ...max 94 Chars";
             this.checkBoxNotAllowDuplicate.UseVisualStyleBackColor = true;
             this.checkBoxNotAllowDuplicate.CheckedChanged += new System.EventHandler(this.checkBoxNotAllowDuplicate_CheckedChanged);
             // 

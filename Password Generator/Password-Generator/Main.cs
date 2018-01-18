@@ -21,12 +21,26 @@ namespace Password_Generator
 
         private void checkBoxNotAllowRepeat_CheckedChanged(object sender, EventArgs e)
         {
-            checkBoxNotAllowDuplicate.Enabled = false;
+            if (checkBoxNotAllowRepeat.Checked)
+            {
+                checkBoxNotAllowDuplicate.Enabled = false;
+            }
+            else
+            {
+                checkBoxNotAllowDuplicate.Enabled = true;
+            }
         }
 
         private void checkBoxNotAllowDuplicate_CheckedChanged(object sender, EventArgs e)
         {
-            checkBoxNotAllowRepeat.Enabled = false;
+            if (checkBoxNotAllowDuplicate.Checked)
+            {
+                checkBoxNotAllowRepeat.Enabled = false;
+            }
+            else
+            {
+                checkBoxNotAllowRepeat.Enabled = true;
+            }
         }
 
         private void textBoxSymbols_KeyPress(object sender, KeyPressEventArgs e)
@@ -182,6 +196,7 @@ namespace Password_Generator
             if(checkBoxNotAllowDuplicate.Checked && array.Count < length)
             {
                 length = array.Count;
+                comboBox1.SelectedIndex = (length - 4); 
             }
             for (int i = 0; i < length; i++)
             {
@@ -197,7 +212,7 @@ namespace Password_Generator
                         password = password + array[j].ToString();
                     }
                 }
-                if ((checkBoxNotAllowDuplicate.Checked) && (password.Length > 0))
+                else if ((checkBoxNotAllowDuplicate.Checked) && (password.Length > 0))
                 {
                     if (password.Contains(array[j].ToString()))
                     {
