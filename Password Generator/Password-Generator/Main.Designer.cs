@@ -32,6 +32,7 @@
             this.passwordBox = new System.Windows.Forms.RichTextBox();
             this.passGenButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.checkBoxBeginWithLetter = new System.Windows.Forms.CheckBox();
             this.checkBoxNotAllowDuplicate = new System.Windows.Forms.CheckBox();
             this.textBoxSymbols = new System.Windows.Forms.TextBox();
             this.checkBoxNotAllowRepeat = new System.Windows.Forms.CheckBox();
@@ -43,6 +44,7 @@
             this.checkBoxIncludeSymbols = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeUpperCase = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeNumbers = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -60,7 +62,7 @@
             // 
             // passGenButton
             // 
-            this.passGenButton.Location = new System.Drawing.Point(81, 231);
+            this.passGenButton.Location = new System.Drawing.Point(81, 325);
             this.passGenButton.Name = "passGenButton";
             this.passGenButton.Size = new System.Drawing.Size(120, 32);
             this.passGenButton.TabIndex = 1;
@@ -71,6 +73,8 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.checkBoxBeginWithLetter);
             this.panel1.Controls.Add(this.checkBoxNotAllowDuplicate);
             this.panel1.Controls.Add(this.textBoxSymbols);
             this.panel1.Controls.Add(this.checkBoxNotAllowRepeat);
@@ -84,13 +88,23 @@
             this.panel1.Controls.Add(this.checkBoxIncludeNumbers);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(262, 213);
+            this.panel1.Size = new System.Drawing.Size(262, 307);
             this.panel1.TabIndex = 2;
+            // 
+            // checkBoxBeginWithLetter
+            // 
+            this.checkBoxBeginWithLetter.AutoSize = true;
+            this.checkBoxBeginWithLetter.Location = new System.Drawing.Point(6, 236);
+            this.checkBoxBeginWithLetter.Name = "checkBoxBeginWithLetter";
+            this.checkBoxBeginWithLetter.Size = new System.Drawing.Size(110, 17);
+            this.checkBoxBeginWithLetter.TabIndex = 15;
+            this.checkBoxBeginWithLetter.Text = "Begin with a letter";
+            this.checkBoxBeginWithLetter.UseVisualStyleBackColor = true;
             // 
             // checkBoxNotAllowDuplicate
             // 
             this.checkBoxNotAllowDuplicate.AutoSize = true;
-            this.checkBoxNotAllowDuplicate.Location = new System.Drawing.Point(6, 190);
+            this.checkBoxNotAllowDuplicate.Location = new System.Drawing.Point(6, 213);
             this.checkBoxNotAllowDuplicate.Name = "checkBoxNotAllowDuplicate";
             this.checkBoxNotAllowDuplicate.Size = new System.Drawing.Size(257, 17);
             this.checkBoxNotAllowDuplicate.TabIndex = 14;
@@ -111,7 +125,7 @@
             // checkBoxNotAllowRepeat
             // 
             this.checkBoxNotAllowRepeat.AutoSize = true;
-            this.checkBoxNotAllowRepeat.Location = new System.Drawing.Point(6, 167);
+            this.checkBoxNotAllowRepeat.Location = new System.Drawing.Point(6, 190);
             this.checkBoxNotAllowRepeat.Name = "checkBoxNotAllowRepeat";
             this.checkBoxNotAllowRepeat.Size = new System.Drawing.Size(237, 17);
             this.checkBoxNotAllowRepeat.TabIndex = 13;
@@ -276,7 +290,7 @@
             // checkBoxExcludeAmbiguous
             // 
             this.checkBoxExcludeAmbiguous.AutoSize = true;
-            this.checkBoxExcludeAmbiguous.Location = new System.Drawing.Point(6, 144);
+            this.checkBoxExcludeAmbiguous.Location = new System.Drawing.Point(6, 167);
             this.checkBoxExcludeAmbiguous.Name = "checkBoxExcludeAmbiguous";
             this.checkBoxExcludeAmbiguous.Size = new System.Drawing.Size(247, 17);
             this.checkBoxExcludeAmbiguous.TabIndex = 12;
@@ -292,11 +306,12 @@
             this.checkBoxIncludeLowerCase.TabIndex = 7;
             this.checkBoxIncludeLowerCase.Text = "Include Lowercase Characters         abc...";
             this.checkBoxIncludeLowerCase.UseVisualStyleBackColor = true;
+            this.checkBoxIncludeLowerCase.CheckedChanged += new System.EventHandler(this.checkBoxIncludeLowerCase_CheckedChanged);
             // 
             // checkBoxExcludeSimilar
             // 
             this.checkBoxExcludeSimilar.AutoSize = true;
-            this.checkBoxExcludeSimilar.Location = new System.Drawing.Point(6, 121);
+            this.checkBoxExcludeSimilar.Location = new System.Drawing.Point(6, 144);
             this.checkBoxExcludeSimilar.Name = "checkBoxExcludeSimilar";
             this.checkBoxExcludeSimilar.Size = new System.Drawing.Size(256, 17);
             this.checkBoxExcludeSimilar.TabIndex = 11;
@@ -322,6 +337,7 @@
             this.checkBoxIncludeUpperCase.TabIndex = 8;
             this.checkBoxIncludeUpperCase.Text = "Include Uppercase Characters         ABC...";
             this.checkBoxIncludeUpperCase.UseVisualStyleBackColor = true;
+            this.checkBoxIncludeUpperCase.CheckedChanged += new System.EventHandler(this.checkBoxIncludeUpperCase_CheckedChanged);
             // 
             // checkBoxIncludeNumbers
             // 
@@ -332,6 +348,15 @@
             this.checkBoxIncludeNumbers.TabIndex = 9;
             this.checkBoxIncludeNumbers.Text = "Include Numbers                              123... ";
             this.checkBoxIncludeNumbers.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 128);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(46, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Options:";
             // 
             // Main
             // 
@@ -368,5 +393,7 @@
         private System.Windows.Forms.CheckBox checkBoxNotAllowRepeat;
         private System.Windows.Forms.TextBox textBoxSymbols;
         private System.Windows.Forms.CheckBox checkBoxNotAllowDuplicate;
+        private System.Windows.Forms.CheckBox checkBoxBeginWithLetter;
+        private System.Windows.Forms.Label label2;
     }
 }

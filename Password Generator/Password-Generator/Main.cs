@@ -43,6 +43,43 @@ namespace Password_Generator
             }
         }
 
+
+        private void checkBoxIncludeLowerCase_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxIncludeLowerCase.Checked)
+            {
+                checkBoxBeginWithLetter.Enabled = true;
+            }
+            else
+            {
+                beginWithLetterDisable();
+            }
+        }
+
+        private void checkBoxIncludeUpperCase_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxIncludeUpperCase.Checked)
+            {
+                checkBoxBeginWithLetter.Enabled = true;
+            }
+            else
+            {
+                beginWithLetterDisable();
+            }
+        }
+
+        private void beginWithLetterDisable()
+        {
+            if (!checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked)
+            {
+                if (checkBoxBeginWithLetter.Checked)
+                {
+                    checkBoxBeginWithLetter.Checked = false;
+                }
+                checkBoxBeginWithLetter.Enabled = false;
+            }
+        }
+
         private void textBoxSymbols_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '!' || e.KeyChar == '"' || e.KeyChar == '\\'||
@@ -184,6 +221,8 @@ namespace Password_Generator
                 array.Remove(")");
                 array.Remove("\\");
                 array.Remove("/");
+                array.Remove("'");
+                array.Remove("\"");
                 array.Remove("`");
                 array.Remove("~");
                 array.Remove(",");
@@ -201,9 +240,9 @@ namespace Password_Generator
             for (int i = 0; i < length; i++)
             {
                 int j = rnd.Next(array.Count);
-                if((checkBoxNotAllowRepeat.Checked) && (password.Length > 0))
+                if ((checkBoxNotAllowRepeat.Checked) && (password.Length > 0))
                 {
-                    if(password.EndsWith(array[j].ToString()))
+                    if (password.EndsWith(array[j].ToString()))
                     {
                         i--;
                     }
@@ -221,6 +260,17 @@ namespace Password_Generator
                     else
                     {
                         password = password + array[j].ToString();
+                    }
+                }
+                else if ((checkBoxBeginWithLetter.Checked) && (password.Length == 0))
+                {
+                    if (Char.IsLetter(((array[j].ToString()).ToCharArray()[0])))
+                    {
+                        password = password + array[j].ToString();
+                    }
+                    else
+                    {
+                        i--;
                     }
                 }
                 else
