@@ -1,59 +1,72 @@
 ﻿using System;
 using System.Collections;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
-using System.Drawing;
+using System.Text;
 using System.Threading;
-using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace Password_Generator
 {
-    public partial class Main : Form
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
         static Random rnd = new Random();
         public static double score = 0.0;
 
-        public Main()
+        public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void Main_Load(object sender, EventArgs e)
+        private void mainWindow_Loaded(object sender, EventArgs e)
         {
             comboBox1.SelectedIndex = 0;
-            checkBoxIncludeLowerCase.Checked = true;
+            checkBoxIncludeLowerCase.IsChecked = true;
         }
 
         private void checkBoxNotAllowRepeat_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxNotAllowRepeat.Checked)
+            if ((bool)checkBoxNotAllowRepeat.IsChecked)
             {
-                checkBoxNotAllowDuplicate.Enabled = false;
+                checkBoxNotAllowDuplicate.IsEnabled = false;
             }
             else
             {
-                checkBoxNotAllowDuplicate.Enabled = true;
+                checkBoxNotAllowDuplicate.IsEnabled = true;
             }
         }
 
         private void checkBoxNotAllowDuplicate_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxNotAllowDuplicate.Checked)
+            if ((bool)checkBoxNotAllowDuplicate.IsChecked)
             {
-                checkBoxNotAllowRepeat.Enabled = false;
+                checkBoxNotAllowRepeat.IsEnabled = false;
             }
             else
             {
-                checkBoxNotAllowRepeat.Enabled = true;
+                checkBoxNotAllowRepeat.IsEnabled = true;
             }
         }
 
 
         private void checkBoxIncludeLowerCase_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxIncludeLowerCase.Checked)
+            if ((bool)checkBoxIncludeLowerCase.IsChecked)
             {
-                checkBoxBeginWithLetter.Enabled = true;
+                checkBoxBeginWithLetter.IsEnabled = true;
             }
             else
             {
@@ -63,9 +76,9 @@ namespace Password_Generator
 
         private void checkBoxIncludeUpperCase_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBoxIncludeUpperCase.Checked)
+            if ((bool)checkBoxIncludeUpperCase.IsChecked)
             {
-                checkBoxBeginWithLetter.Enabled = true;
+                checkBoxBeginWithLetter.IsEnabled = true;
             }
             else
             {
@@ -75,31 +88,31 @@ namespace Password_Generator
 
         private void beginWithLetterDisable()
         {
-            if (!checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked)
+            if ((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked)
             {
-                if (checkBoxBeginWithLetter.Checked)
+                if ((bool)checkBoxBeginWithLetter.IsChecked)
                 {
-                    checkBoxBeginWithLetter.Checked = false;
+                    checkBoxBeginWithLetter.IsChecked = false;
                 }
-                checkBoxBeginWithLetter.Enabled = false;
+                checkBoxBeginWithLetter.IsEnabled = false;
             }
         }
 
-        private void textBoxSymbols_KeyPress(object sender, KeyPressEventArgs e)
+        private void textBoxSymbols_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar == '!' || e.KeyChar == '"' || e.KeyChar == '\\' ||
-                e.KeyChar == ';' || e.KeyChar == '#' || e.KeyChar == '$' ||
-                e.KeyChar == '%' || e.KeyChar == '(' || e.KeyChar == '\'' ||
-                e.KeyChar == ')' || e.KeyChar == '&' || e.KeyChar == '*' ||
-                e.KeyChar == '+' || e.KeyChar == ',' || e.KeyChar == '-' ||
-                e.KeyChar == '.' || e.KeyChar == '/' || e.KeyChar == ':' ||
-                e.KeyChar == '<' || e.KeyChar == '>' || e.KeyChar == '=' ||
-                e.KeyChar == '?' || e.KeyChar == '[' || e.KeyChar == ']' ||
-                e.KeyChar == '@' || e.KeyChar == '^' || e.KeyChar == '_' ||
-                e.KeyChar == '{' || e.KeyChar == '}' || e.KeyChar == '|' ||
-                e.KeyChar == '`' || e.KeyChar == '~' || e.KeyChar == '\b')
+            if ((char)KeyInterop.VirtualKeyFromKey(e.Key) == '!' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '"' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '\\' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == ';' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '#' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '$' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '%' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '(' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '\'' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == ')' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '&' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '*' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '+' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == ',' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '-' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '.' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '/' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == ':' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '<' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '>' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '=' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '?' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '[' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == ']' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '@' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '^' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '_' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '{' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '}' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '|' ||
+                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '`' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '~' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '\b')
             {
-                if (!(textBoxSymbols.Text.Contains(e.KeyChar.ToString())))
+                if (!(textBoxSymbols.Text.Contains((char)KeyInterop.VirtualKeyFromKey(e.Key))))
                 {
                     e.Handled = false;
                 }
@@ -117,44 +130,44 @@ namespace Password_Generator
         private void updateProgressBar()
         {
             scoreCheck();
-            if(score > progressBar1.Maximum)
+            if (score > progressBar1.Maximum)
             {
                 score = progressBar1.Maximum;
             }
-            if(score < 20)
+            if (score < 20)
             {
-                labelPasswordStrength.Text = "Very Weak";
-                ModifyProgressBarColor.SetState(progressBar1, 2);
+                labelPasswordStrength.Content = "Very Weak";
+                progressBar1.Foreground = Brushes.DarkRed;
             }
             else if (score >= 20 && score < 40)
             {
-                labelPasswordStrength.Text = "Weak";
-                ModifyProgressBarColor.SetState(progressBar1, 2);
+                labelPasswordStrength.Content = "Weak";
+                progressBar1.Foreground = Brushes.Red;
             }
             else if (score >= 40 && score < 60)
             {
-                labelPasswordStrength.Text = "Good";
-                ModifyProgressBarColor.SetState(progressBar1, 3);
+                labelPasswordStrength.Content = "Good";
+                progressBar1.Foreground = Brushes.Orange;
             }
             else if (score >= 60 && score < 80)
             {
-                labelPasswordStrength.Text = "Very Good";
-                ModifyProgressBarColor.SetState(progressBar1, 3);
+                labelPasswordStrength.Content = "Very Good";
+                progressBar1.Foreground = Brushes.Yellow;
             }
             else if (score >= 80 && score < 90)
             {
-                labelPasswordStrength.Text = "Strong";
-                ModifyProgressBarColor.SetState(progressBar1, 1);
+                labelPasswordStrength.Content = "Strong";
+                progressBar1.Foreground = Brushes.YellowGreen;
             }
             else if (score <= 90 && score < 101)
             {
-                labelPasswordStrength.Text = "Very Strong";
-                ModifyProgressBarColor.SetState(progressBar1, 1);
+                labelPasswordStrength.Content = "Very Strong";
+                progressBar1.Foreground = Brushes.GreenYellow;
             }
-            else if(score <= 101)
+            else if (score <= 101)
             {
-                labelPasswordStrength.Text = "Maybe Too Strong";
-                ModifyProgressBarColor.SetState(progressBar1, 1);
+                labelPasswordStrength.Content = "Crazy Strong";
+                progressBar1.Foreground = Brushes.Green;
             }
             // Wait 100 milliseconds.
             Thread.Sleep(100);
@@ -168,11 +181,11 @@ namespace Password_Generator
             int temp = 0;
             int length = int.Parse(comboBox1.SelectedItem.ToString());
             //Additions
-            int numberOfCharactersScore = (length * 4);
+            int numberOfCharactersScore = (length * 2);
             int numberOfLowerrcaseLettersScore = ((length - (int)array[0]) * 2);
             int numberOfUppercaseLettersScore = ((length - (int)array[1]) * 2);
-            int numberOfNumbersScore = ((int)array[2] * 4);
-            int numberOfSymbolsScore = ((int)array[3] * 6);
+            int numberOfNumbersScore = ((int)array[2] * 2);
+            int numberOfSymbolsScore = ((int)array[3] * 4);
             int numberOfMiddleNumbersOrSymbols = ((int)array[4] * 2);
             for (int i = 0; i < array.Count; i++)
             {
@@ -185,11 +198,11 @@ namespace Password_Generator
 
             score = (numberOfCharactersScore + numberOfLowerrcaseLettersScore + numberOfUppercaseLettersScore + numberOfNumbersScore + numberOfSymbolsScore + numberOfMiddleNumbersOrSymbols);
             //Deductions
-            if ((checkBoxIncludeLowerCase.Checked || checkBoxIncludeUpperCase.Checked) && (!checkBoxIncludeSymbols.Checked && !checkBoxIncludeNumbers.Checked))
+            if (((bool)checkBoxIncludeLowerCase.IsChecked || (bool)checkBoxIncludeUpperCase.IsChecked) && ((bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked))
             {
                 score -= ((int)array[0] + (int)array[1]);
             }
-            if (checkBoxIncludeNumbers.Checked && (!checkBoxIncludeSymbols.Checked && !checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked))
+            if ((bool)checkBoxIncludeNumbers.IsChecked && ((bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked))
             {
                 score -= ((int)array[2]);
             }
@@ -198,15 +211,16 @@ namespace Password_Generator
         private ArrayList passwordBreakDown()
         {
             ArrayList array = new ArrayList();
-            char[] sort = new char[passwordBox.Text.ToString().Length];
+            string temp = new TextRange(passwordBox.Document.ContentStart, passwordBox.Document.ContentEnd).Text;
+            char[] sort = new char[temp.Length];
             int lowerCase = 0;
             int upperCase = 0;
             int numbers = 0;
             int symbols = 0;
             int middleNumbersOrSymbols = 0;
-            for (int i = 0; i < passwordBox.Text.ToString().Length; i++)
+            for (int i = 0; i < temp.Length; i++)
             {
-                sort[i] = passwordBox.Text.ToString().Substring(i, 1)[0];
+                sort[i] = temp.Substring(i, 1)[0];
                 if (char.IsLower(sort[i]))
                 {
                     lowerCase++;
@@ -218,7 +232,7 @@ namespace Password_Generator
                 else if (char.IsNumber(sort[i]))
                 {
                     numbers++;
-                    if(i != 0 && i++ != passwordBox.Text.ToString().Length)
+                    if (i != 0 && i++ != temp.Length)
                     {
                         middleNumbersOrSymbols++;
                     }
@@ -226,7 +240,7 @@ namespace Password_Generator
                 else
                 {
                     symbols++;
-                    if (i != 0 && i++ != passwordBox.Text.ToString().Length)
+                    if (i != 0 && i++ != temp.Length)
                     {
                         middleNumbersOrSymbols++;
                     }
@@ -241,17 +255,17 @@ namespace Password_Generator
             return array;
         }
 
-        private void passGenButton_Click(object sender, EventArgs e)
+        private void passGenButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((!checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked && !checkBoxIncludeSymbols.Checked && !checkBoxIncludeNumbers.Checked) || (checkBoxIncludeSymbols.Checked && textBoxSymbols.TextLength == 0 && !checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked && !checkBoxIncludeNumbers.Checked))
+            if (((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) || ((bool)checkBoxIncludeSymbols.IsChecked && textBoxSymbols.Text.Length == 0 && (bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked))
             {
-                MessageBox.Show("You need to select a type of character to include.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You need to select a type of character to include.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             string password = "";
             int length = int.Parse(comboBox1.SelectedItem.ToString());
             ArrayList array = new ArrayList();
-            if (checkBoxIncludeLowerCase.Checked)
+            if ((bool)checkBoxIncludeLowerCase.IsChecked)
             {
                 array.Add("a");
                 array.Add("b");
@@ -280,7 +294,7 @@ namespace Password_Generator
                 array.Add("y");
                 array.Add("z");
             }
-            if (checkBoxIncludeUpperCase.Checked)
+            if ((bool)checkBoxIncludeUpperCase.IsChecked)
             {
                 array.Add("A");
                 array.Add("B");
@@ -309,7 +323,7 @@ namespace Password_Generator
                 array.Add("Y");
                 array.Add("Z");
             }
-            if (checkBoxIncludeNumbers.Checked)
+            if ((bool)checkBoxIncludeNumbers.IsChecked)
             {
                 array.Add("1");
                 array.Add("2");
@@ -322,17 +336,17 @@ namespace Password_Generator
                 array.Add("9");
                 array.Add("0");
             }
-            if (checkBoxIncludeSymbols.Checked)
+            if ((bool)checkBoxIncludeSymbols.IsChecked)
             {
-                if (textBoxSymbols.TextLength > 0)
+                if (textBoxSymbols.Text.Length > 0)
                 {
-                    for (int i = 0; i < textBoxSymbols.TextLength; i++)
+                    for (int i = 0; i < textBoxSymbols.Text.Length; i++)
                     {
                         array.Add(textBoxSymbols.Text.Substring(i, 1));
                     }
                 }
             }
-            if (checkBoxExcludeSimilar.Checked)
+            if ((bool)checkBoxExcludeSimilar.IsChecked)
             {
                 array.Remove("i");
                 array.Remove("1");
@@ -343,7 +357,7 @@ namespace Password_Generator
                 array.Remove("O");
                 array.Remove("0");
             }
-            if (checkBoxExcludeAmbiguous.Checked)
+            if ((bool)checkBoxExcludeAmbiguous.IsChecked)
             {
                 array.Remove("{");
                 array.Remove("}");
@@ -364,7 +378,7 @@ namespace Password_Generator
                 array.Remove("<");
                 array.Remove(">");
             }
-            if (checkBoxNotAllowDuplicate.Checked && array.Count < length)
+            if ((bool)checkBoxNotAllowDuplicate.IsChecked && array.Count < length)
             {
                 length = array.Count;
                 comboBox1.SelectedIndex = (length - 4);
@@ -372,7 +386,7 @@ namespace Password_Generator
             for (int i = 0; i < length; i++)
             {
                 int j = rnd.Next(array.Count);
-                if ((checkBoxNotAllowRepeat.Checked) && (password.Length > 0))
+                if (((bool)checkBoxNotAllowRepeat.IsChecked) && (password.Length > 0))
                 {
                     if (password.EndsWith(array[j].ToString()))
                     {
@@ -383,7 +397,7 @@ namespace Password_Generator
                         password = password + array[j].ToString();
                     }
                 }
-                else if ((checkBoxNotAllowDuplicate.Checked) && (password.Length > 0))
+                else if (((bool)checkBoxNotAllowDuplicate.IsChecked) && (password.Length > 0))
                 {
                     if (password.Contains(array[j].ToString()))
                     {
@@ -394,7 +408,7 @@ namespace Password_Generator
                         password = password + array[j].ToString();
                     }
                 }
-                else if ((checkBoxBeginWithLetter.Checked) && (password.Length == 0))
+                else if (((bool)checkBoxBeginWithLetter.IsChecked) && (password.Length == 0))
                 {
                     if (Char.IsLetter(((array[j].ToString()).ToCharArray()[0])))
                     {
@@ -410,23 +424,9 @@ namespace Password_Generator
                     password = password + array[j].ToString();
                 }
             }
-            passwordBox.Text = password;
+            passwordBox.Document.Blocks.Clear();
+            passwordBox.Document.Blocks.Add(new Paragraph(new Run(password)));
             updateProgressBar();
         }
-    }
-
-    public static class ModifyProgressBarColor
-    {
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
-        public static void SetState(this ProgressBar pBar, int state)
-        {
-            SendMessage(pBar.Handle, 1040, (IntPtr)state, IntPtr.Zero);
-        }
-
-        /*
-         * ModifyProgressBarColor.SetState(progressBarName, #);
-         * the # is the SetState, 1 = normal (green); 2 = error (red); 3 = warning (yellow).
-         */
     }
 }
