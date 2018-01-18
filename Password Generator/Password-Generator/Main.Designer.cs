@@ -32,6 +32,7 @@
             this.passwordBox = new System.Windows.Forms.RichTextBox();
             this.passGenButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.checkBoxBeginWithLetter = new System.Windows.Forms.CheckBox();
             this.checkBoxNotAllowDuplicate = new System.Windows.Forms.CheckBox();
             this.textBoxSymbols = new System.Windows.Forms.TextBox();
@@ -44,7 +45,9 @@
             this.checkBoxIncludeSymbols = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeUpperCase = new System.Windows.Forms.CheckBox();
             this.checkBoxIncludeNumbers = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.labelPasswordStrength = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -88,8 +91,17 @@
             this.panel1.Controls.Add(this.checkBoxIncludeNumbers);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(262, 307);
+            this.panel1.Size = new System.Drawing.Size(262, 260);
             this.panel1.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 128);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(46, 13);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "Options:";
             // 
             // checkBoxBeginWithLetter
             // 
@@ -349,20 +361,40 @@
             this.checkBoxIncludeNumbers.Text = "Include Numbers                              123... ";
             this.checkBoxIncludeNumbers.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // label3
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 128);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 13);
-            this.label2.TabIndex = 16;
-            this.label2.Text = "Options:";
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(38, 278);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(97, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Password strength:";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(12, 296);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(262, 23);
+            this.progressBar1.Step = 1;
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar1.TabIndex = 5;
+            // 
+            // labelPasswordStrength
+            // 
+            this.labelPasswordStrength.AutoSize = true;
+            this.labelPasswordStrength.Location = new System.Drawing.Point(132, 278);
+            this.labelPasswordStrength.Name = "labelPasswordStrength";
+            this.labelPasswordStrength.Size = new System.Drawing.Size(0, 13);
+            this.labelPasswordStrength.TabIndex = 6;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 442);
+            this.Controls.Add(this.labelPasswordStrength);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.passGenButton);
             this.Controls.Add(this.passwordBox);
@@ -374,6 +406,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -395,5 +428,8 @@
         private System.Windows.Forms.CheckBox checkBoxNotAllowDuplicate;
         private System.Windows.Forms.CheckBox checkBoxBeginWithLetter;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Label labelPasswordStrength;
     }
 }

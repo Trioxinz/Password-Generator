@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Drawing;
+using System.Threading;
+using System.ComponentModel;
 
 namespace Password_Generator
 {
     public partial class Main : Form
     {
         static Random rnd = new Random();
+        public static double score = 0.0;
 
         public Main()
         {
@@ -82,9 +87,9 @@ namespace Password_Generator
 
         private void textBoxSymbols_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '!' || e.KeyChar == '"' || e.KeyChar == '\\'||
+            if (e.KeyChar == '!' || e.KeyChar == '"' || e.KeyChar == '\\' ||
                 e.KeyChar == ';' || e.KeyChar == '#' || e.KeyChar == '$' ||
-                e.KeyChar == '%' || e.KeyChar == '(' || e.KeyChar == '\''||
+                e.KeyChar == '%' || e.KeyChar == '(' || e.KeyChar == '\'' ||
                 e.KeyChar == ')' || e.KeyChar == '&' || e.KeyChar == '*' ||
                 e.KeyChar == '+' || e.KeyChar == ',' || e.KeyChar == '-' ||
                 e.KeyChar == '.' || e.KeyChar == '/' || e.KeyChar == ':' ||
@@ -94,7 +99,7 @@ namespace Password_Generator
                 e.KeyChar == '{' || e.KeyChar == '}' || e.KeyChar == '|' ||
                 e.KeyChar == '`' || e.KeyChar == '~' || e.KeyChar == '\b')
             {
-                if(!(textBoxSymbols.Text.Contains(e.KeyChar.ToString())))
+                if (!(textBoxSymbols.Text.Contains(e.KeyChar.ToString())))
                 {
                     e.Handled = false;
                 }
@@ -107,6 +112,133 @@ namespace Password_Generator
             {
                 e.Handled = true;
             }
+        }
+
+        private void updateProgressBar()
+        {
+            scoreCheck();
+            if(score > progressBar1.Maximum)
+            {
+                score = progressBar1.Maximum;
+            }
+            if(score < 20)
+            {
+                labelPasswordStrength.Text = "Very Weak";
+                ModifyProgressBarColor.SetState(progressBar1, 2);
+            }
+            else if (score >= 20 && score < 40)
+            {
+                labelPasswordStrength.Text = "Weak";
+                ModifyProgressBarColor.SetState(progressBar1, 2);
+            }
+            else if (score >= 40 && score < 60)
+            {
+                labelPasswordStrength.Text = "Good";
+                ModifyProgressBarColor.SetState(progressBar1, 3);
+            }
+            else if (score >= 60 && score < 80)
+            {
+                labelPasswordStrength.Text = "Very Good";
+                ModifyProgressBarColor.SetState(progressBar1, 3);
+            }
+            else if (score >= 80 && score < 90)
+            {
+                labelPasswordStrength.Text = "Strong";
+                ModifyProgressBarColor.SetState(progressBar1, 1);
+            }
+            else if (score <= 90 && score < 101)
+            {
+                labelPasswordStrength.Text = "Very Strong";
+                ModifyProgressBarColor.SetState(progressBar1, 1);
+            }
+            else if(score <= 101)
+            {
+                labelPasswordStrength.Text = "Maybe Too Strong";
+                ModifyProgressBarColor.SetState(progressBar1, 1);
+            }
+            // Wait 100 milliseconds.
+            Thread.Sleep(100);
+            progressBar1.Value = (int)score;
+        }
+
+        private void scoreCheck()
+        {
+            ArrayList array = passwordBreakDown();
+            score = 0;
+            int temp = 0;
+            int length = int.Parse(comboBox1.SelectedItem.ToString());
+            //Additions
+            int numberOfCharactersScore = (length * 4);
+            int numberOfLowerrcaseLettersScore = ((length - (int)array[0]) * 2);
+            int numberOfUppercaseLettersScore = ((length - (int)array[1]) * 2);
+            int numberOfNumbersScore = ((int)array[2] * 4);
+            int numberOfSymbolsScore = ((int)array[3] * 6);
+            int numberOfMiddleNumbersOrSymbols = ((int)array[4] * 2);
+            for (int i = 0; i < array.Count; i++)
+            {
+                if ((int)array[i] > 0)
+                {
+                    temp++;
+                }
+            }
+            int numberOfRequirementTypes = (temp * 2);
+
+            score = (numberOfCharactersScore + numberOfLowerrcaseLettersScore + numberOfUppercaseLettersScore + numberOfNumbersScore + numberOfSymbolsScore + numberOfMiddleNumbersOrSymbols);
+            //Deductions
+            if ((checkBoxIncludeLowerCase.Checked || checkBoxIncludeUpperCase.Checked) && (!checkBoxIncludeSymbols.Checked && !checkBoxIncludeNumbers.Checked))
+            {
+                score -= ((int)array[0] + (int)array[1]);
+            }
+            if (checkBoxIncludeNumbers.Checked && (!checkBoxIncludeSymbols.Checked && !checkBoxIncludeLowerCase.Checked && !checkBoxIncludeUpperCase.Checked))
+            {
+                score -= ((int)array[2]);
+            }
+        }
+
+        private ArrayList passwordBreakDown()
+        {
+            ArrayList array = new ArrayList();
+            char[] sort = new char[passwordBox.Text.ToString().Length];
+            int lowerCase = 0;
+            int upperCase = 0;
+            int numbers = 0;
+            int symbols = 0;
+            int middleNumbersOrSymbols = 0;
+            for (int i = 0; i < passwordBox.Text.ToString().Length; i++)
+            {
+                sort[i] = passwordBox.Text.ToString().Substring(i, 1)[0];
+                if (char.IsLower(sort[i]))
+                {
+                    lowerCase++;
+                }
+                else if (char.IsUpper(sort[i]))
+                {
+                    upperCase++;
+                }
+                else if (char.IsNumber(sort[i]))
+                {
+                    numbers++;
+                    if(i != 0 && i++ != passwordBox.Text.ToString().Length)
+                    {
+                        middleNumbersOrSymbols++;
+                    }
+                }
+                else
+                {
+                    symbols++;
+                    if (i != 0 && i++ != passwordBox.Text.ToString().Length)
+                    {
+                        middleNumbersOrSymbols++;
+                    }
+                }
+            }
+            array.Clear();
+            array.Add(lowerCase);
+            array.Add(upperCase);
+            array.Add(numbers);
+            array.Add(symbols);
+            array.Add(middleNumbersOrSymbols);
+            return array;
         }
 
         private void passGenButton_Click(object sender, EventArgs e)
@@ -192,9 +324,9 @@ namespace Password_Generator
             }
             if (checkBoxIncludeSymbols.Checked)
             {
-                if(textBoxSymbols.TextLength > 0)
+                if (textBoxSymbols.TextLength > 0)
                 {
-                    for(int i = 0; i < textBoxSymbols.TextLength; i++)
+                    for (int i = 0; i < textBoxSymbols.TextLength; i++)
                     {
                         array.Add(textBoxSymbols.Text.Substring(i, 1));
                     }
@@ -232,10 +364,10 @@ namespace Password_Generator
                 array.Remove("<");
                 array.Remove(">");
             }
-            if(checkBoxNotAllowDuplicate.Checked && array.Count < length)
+            if (checkBoxNotAllowDuplicate.Checked && array.Count < length)
             {
                 length = array.Count;
-                comboBox1.SelectedIndex = (length - 4); 
+                comboBox1.SelectedIndex = (length - 4);
             }
             for (int i = 0; i < length; i++)
             {
@@ -279,6 +411,22 @@ namespace Password_Generator
                 }
             }
             passwordBox.Text = password;
+            updateProgressBar();
         }
+    }
+
+    public static class ModifyProgressBarColor
+    {
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
+        public static void SetState(this ProgressBar pBar, int state)
+        {
+            SendMessage(pBar.Handle, 1040, (IntPtr)state, IntPtr.Zero);
+        }
+
+        /*
+         * ModifyProgressBarColor.SetState(progressBarName, #);
+         * the # is the SetState, 1 = normal (green); 2 = error (red); 3 = warning (yellow).
+         */
     }
 }
