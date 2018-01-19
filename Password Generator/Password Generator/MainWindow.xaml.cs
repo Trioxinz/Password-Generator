@@ -37,7 +37,7 @@ namespace Password_Generator
             checkBoxIncludeLowerCase.IsChecked = true;
         }
 
-        private void checkBoxNotAllowRepeat_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxNotAllowRepeat_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxNotAllowRepeat.IsChecked)
             {
@@ -49,7 +49,7 @@ namespace Password_Generator
             }
         }
 
-        private void checkBoxNotAllowDuplicate_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxNotAllowDuplicate_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxNotAllowDuplicate.IsChecked)
             {
@@ -62,7 +62,7 @@ namespace Password_Generator
         }
 
 
-        private void checkBoxIncludeLowerCase_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxIncludeLowerCase_Check(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxIncludeLowerCase.IsChecked)
             {
@@ -74,7 +74,7 @@ namespace Password_Generator
             }
         }
 
-        private void checkBoxIncludeUpperCase_CheckedChanged(object sender, EventArgs e)
+        private void checkBoxIncludeUpperCase_Check(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxIncludeUpperCase.IsChecked)
             {
@@ -98,21 +98,22 @@ namespace Password_Generator
             }
         }
 
-        private void textBoxSymbols_PreviewKeyDown(object sender, KeyEventArgs e)
+        private void textBoxSymbols_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if ((char)KeyInterop.VirtualKeyFromKey(e.Key) == '!' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '"' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '\\' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == ';' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '#' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '$' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '%' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '(' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '\'' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == ')' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '&' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '*' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '+' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == ',' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '-' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '.' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '/' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == ':' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '<' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '>' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '=' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '?' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '[' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == ']' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '@' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '^' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '_' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '{' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '}' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '|' ||
-                (char)KeyInterop.VirtualKeyFromKey(e.Key) == '`' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '~' || (char)KeyInterop.VirtualKeyFromKey(e.Key) == '\b')
+            char key = Convert.ToChar(e.Text);
+            if (key == '!' || key == '"' || key == '\\'||
+                key == ';' || key == '#' || key == '$' ||
+                key == '%' || key == '(' || key == '\''||
+                key == ')' || key == '&' || key == '*' ||
+                key == '+' || key == ',' || key == '-' ||
+                key == '.' || key == '/' || key == ':' ||
+                key == '<' || key == '>' || key == '=' ||
+                key == '?' || key == '[' || key == ']' ||
+                key == '@' || key == '^' || key == '_' ||
+                key == '{' || key == '}' || key == '|' ||
+                key == '`' || key == '~' || key == '\b')
             {
-                if (!(textBoxSymbols.Text.Contains((char)KeyInterop.VirtualKeyFromKey(e.Key))))
+                if (!(textBoxSymbols.Text.Contains(e.Text)))
                 {
                     e.Handled = false;
                 }
@@ -181,15 +182,15 @@ namespace Password_Generator
             int temp = 0;
             int length = int.Parse(comboBox1.SelectedItem.ToString());
             //Additions
-            int numberOfCharactersScore = (length * 2);
+            int numberOfCharactersScore = (length * 1);
             int numberOfLowerrcaseLettersScore = ((length - (int)array[0]) * 2);
             int numberOfUppercaseLettersScore = ((length - (int)array[1]) * 2);
             int numberOfNumbersScore = ((int)array[2] * 2);
             int numberOfSymbolsScore = ((int)array[3] * 4);
             int numberOfMiddleNumbersOrSymbols = ((int)array[4] * 2);
-            for (int i = 0; i < array.Count; i++)
+            for (int i = 0; i < 4; i++)
             {
-                if ((int)array[i] > 0)
+                if ((int)array[i] > 1)
                 {
                     temp++;
                 }
@@ -202,9 +203,11 @@ namespace Password_Generator
             {
                 score -= ((int)array[0] + (int)array[1]);
             }
-            if ((bool)checkBoxIncludeNumbers.IsChecked && ((bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked))
+            if ((bool)checkBoxIncludeNumbers.IsChecked && ((bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeLowerCase.IsChecked && ((bool)!checkBoxIncludeSymbols.IsChecked || ((bool)checkBoxIncludeSymbols.IsChecked) && (textBoxSymbols.Text.Length == 0))))
             {
+                score -= ((int)array[4] * 2);
                 score -= ((int)array[2]);
+                score = (score / 2);
             }
         }
 
