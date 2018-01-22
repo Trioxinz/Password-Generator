@@ -170,7 +170,7 @@
             <Label x:Name="labelForPasswordStrength" Content="Password strength:" Margin="17.666,0.666,155.167,0" VerticalAlignment="Top" d:LayoutOverrides="Width"/>
             <Label x:Name="labelPasswordStrength" Content="" Margin="128.165,0.666,0,0" VerticalAlignment="Top"/>
         </Grid>
-        <RichTextBox x:Name="passwordBox" Margin="298,10,10,10" IsReadOnlyCaretVisible="True" VerticalScrollBarVisibility="Auto" d:IsLocked="True">
+        <RichTextBox x:Name="passwordBox" Margin="298,10,10,10" VerticalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" PreviewKeyDown="onPreviewKeyDownRTB">
             <FlowDocument/>
         </RichTextBox>
 

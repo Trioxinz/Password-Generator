@@ -1,20 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Password_Generator
 {
@@ -128,23 +118,21 @@ namespace Password_Generator
         private void notAllowGroupRepeatDisableCheck()
         {
             if (
-                ((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) || 
-                ((bool)checkBoxIncludeSymbols.IsChecked && textBoxSymbols.Text.Length == 0 && (bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) ||
-                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) ||
-                ((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) ||
-                ((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) ||
-                ((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)checkBoxIncludeNumbers.IsChecked)
+                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked) ||
+                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)checkBoxIncludeNumbers.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked) ||
+                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked && (bool)checkBoxIncludeSymbols.IsChecked) ||
+                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)checkBoxIncludeNumbers.IsChecked && (bool)checkBoxIncludeSymbols.IsChecked)
                 )
+            {
+                checkBoxNotAllowGroupRepeat.IsEnabled = true;
+            }
+            else
             {
                 if ((bool)checkBoxNotAllowGroupRepeat.IsChecked)
                 {
                     checkBoxNotAllowGroupRepeat.IsChecked = false;
                 }
                 checkBoxNotAllowGroupRepeat.IsEnabled = false;
-            }
-            else
-            {
-                checkBoxNotAllowGroupRepeat.IsEnabled = true;
             }
         }
 
@@ -193,6 +181,22 @@ namespace Password_Generator
         private void onPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
+            base.OnPreviewKeyDown(e);
+        }
+        private void onPreviewKeyDownRTB(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.A && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                e.Handled = false;
+            }
+            else if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                e.Handled = false;
+            }
+            else
             {
                 e.Handled = true;
             }
@@ -355,7 +359,6 @@ namespace Password_Generator
 
         private void passGenButton_Click(object sender, RoutedEventArgs e)
         {
-            //passGenButton.IsEnabled = false;
             if (((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) || ((bool)checkBoxIncludeSymbols.IsChecked && textBoxSymbols.Text.Length == 0 && (bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked))
             {
                 MessageBox.Show("You need to select a type of character to include.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -568,7 +571,6 @@ namespace Password_Generator
             passwordBox.Document.Blocks.Clear();
             passwordBox.Document.Blocks.Add(new Paragraph(new Run(password)));
             updateProgressBar();
-            //passGenButton.IsEnabled = true;
         }
     }
 } 
