@@ -8,9 +8,9 @@
         mc:Ignorable="d"
         Title="Password Generator" Height="480" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="CanResizeWithGrip" MinWidth="600" MinHeight="480" Loaded="mainWindow_Loaded" Icon="icon.ico">
     <Grid>
-        <Grid HorizontalAlignment="Left" Margin="0,10,0,0" Width="293" Height="274.667" VerticalAlignment="Top">
-            <Label x:Name="labelLength" Content="Length:&#xD;&#xA;" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="49.24" Height="26.587" d:IsLocked="True"/>
-            <ComboBox x:Name="comboBox1" Margin="64.24,14.627,128.76,0" VerticalAlignment="Top" d:IsLocked="True">
+        <Grid HorizontalAlignment="Left" Margin="10,10,0,0" Width="283" Height="317.667" VerticalAlignment="Top" d:LayoutOverrides="HorizontalAlignment">
+            <Label x:Name="labelLength" Content="Length:&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49.24" Height="26.587"/>
+            <ComboBox x:Name="comboBox1" Margin="54.24,4.627,138.76,0" VerticalAlignment="Top">
                 <System:String>4</System:String>
                 <System:String>5</System:String>
                 <System:String>6</System:String>
@@ -147,26 +147,32 @@
                 <System:String>65536</System:String>
                 <System:String>131072</System:String>
             </ComboBox>
-            <CheckBox x:Name="checkBoxIncludeLowerCase" Content="Include Lowercase Characters         abc..." HorizontalAlignment="Left" Margin="16,41.587,0,0" VerticalAlignment="Top" Checked="checkBoxIncludeLowerCase_Check" Unchecked="checkBoxIncludeLowerCase_Check" d:IsLocked="True"/>
-            <CheckBox x:Name="checkBoxIncludeUpperCase" Content="Include Uppercase Characters         ABC..." HorizontalAlignment="Left" Margin="16,62.547,0,0" VerticalAlignment="Top" Unchecked="checkBoxIncludeUpperCase_Check" Checked="checkBoxIncludeUpperCase_Check" d:IsLocked="True"/>
-            <CheckBox x:Name="checkBoxIncludeNumbers" Content="Include Numbers                              123... " HorizontalAlignment="Left" Margin="16,83.507,0,0" VerticalAlignment="Top" d:IsLocked="True"/>
-            <CheckBox x:Name="checkBoxIncludeSymbols" Content="Include Symbols:" Margin="16,104.467,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" d:IsLocked="True"/>
-            <TextBox x:Name="textBoxSymbols" Height="23" Margin="124.807,101.467,3.357,0" TextWrapping="Wrap" Text="!&quot;\#$%'(&amp;)*+,-./:;&lt;=&gt;?[@]^_`{|}~" VerticalAlignment="Top" FontSize="10.667" PreviewTextInput="textBoxSymbols_PreviewTextInput" d:IsLocked="True"/>
-            <Label x:Name="labelOptions" Content="Options:" HorizontalAlignment="Left" Margin="10,0,0,109.8" VerticalAlignment="Bottom" d:IsLocked="True"/>
-            <CheckBox x:Name="checkBoxExcludeSimilar" Content="Exclude Similar Characters         i, l, 1, L, o, 0, O" Margin="16,0,0,93.84" VerticalAlignment="Bottom" HorizontalAlignment="Left" d:IsLocked="True"/>
-            <CheckBox x:Name="checkBoxExcludeAmbiguous" Content="Exclude Ambiguous   { } [ ] ( ) / \ ' &quot; ` ~ , ; : . &lt; &gt;" HorizontalAlignment="Left" Margin="16,0,0,72.88" VerticalAlignment="Bottom" d:IsLocked="True"/>
-            <CheckBox x:Name="checkBoxNotAllowRepeat" Content="Dissallow Characters to repeat consecutively" HorizontalAlignment="Left" Margin="16,0,0,51.92" VerticalAlignment="Bottom" Checked="checkBoxNotAllowRepeat_CheckedChanged" Unchecked="checkBoxNotAllowRepeat_CheckedChanged"/>
-            <CheckBox x:Name="checkBoxNotAllowDuplicate" Content="Dissallow Duplicate Characters   ...max 94 Chars" HorizontalAlignment="Left" Margin="16,0,0,30.96" VerticalAlignment="Bottom" Unchecked="checkBoxNotAllowDuplicate_CheckedChanged" Checked="checkBoxNotAllowDuplicate_CheckedChanged"/>
-            <CheckBox x:Name="checkBoxBeginWithLetter" Content="Begin with a letter" HorizontalAlignment="Left" Margin="16,0,0,10" VerticalAlignment="Bottom" d:IsLocked="True"/>
+            <CheckBox x:Name="checkBoxIncludeLowerCase" Content="Include Lowercase Characters         abc..." HorizontalAlignment="Left" Margin="6,31.587,0,0" VerticalAlignment="Top" Checked="checkBoxIncludeLowerCase_Check" Unchecked="checkBoxIncludeLowerCase_Check"/>
+            <CheckBox x:Name="checkBoxIncludeUpperCase" Content="Include Uppercase Characters         ABC..." HorizontalAlignment="Left" Margin="6,52.547,0,0" VerticalAlignment="Top" Unchecked="checkBoxIncludeUpperCase_Check" Checked="checkBoxIncludeUpperCase_Check"/>
+            <CheckBox x:Name="checkBoxIncludeNumbers" Content="Include Numbers                              123... " HorizontalAlignment="Left" Margin="6,73.507,0,0" VerticalAlignment="Top" Checked="checkBoxIncludeNumbers_Check" Unchecked="checkBoxIncludeNumbers_Check"/>
+            <CheckBox x:Name="checkBoxIncludeSymbols" Content="Include Symbols:" Margin="6,94.467,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Checked="checkBoxIncludeSymbols_Check" Unchecked="checkBoxIncludeSymbols_Check"/>
+            <TextBox x:Name="textBoxSymbols" Height="23" Margin="117.053,92.907,0.754,0" TextWrapping="Wrap" Text="!&quot;\#$%'(&amp;)*+,-./:;&lt;=&gt;?[@]^_`{|}~" VerticalAlignment="Top" FontSize="10.667" PreviewTextInput="textBoxSymbols_PreviewTextInput" PreviewKeyDown="onPreviewKeyDown"/>
+            <Label x:Name="labelOptions" Content="Options:" HorizontalAlignment="Left" Margin="0,115.427,0,0" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxExcludeSimilar" Content="Exclude Similar Characters         i, l, 1, L, o, 0, O" Margin="6,141.387,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxExcludeAmbiguous" Content="Exclude Ambiguous   { } [ ] ( ) / \ ' &quot; ` ~ , ; : . &lt; &gt;" HorizontalAlignment="Left" Margin="6,0,0,139.36" VerticalAlignment="Bottom"/>
+            <CheckBox x:Name="checkBoxNotAllowRepeat" Content="Deny Characters to repeat consecutively" HorizontalAlignment="Left" Margin="6,0,0,118.4" VerticalAlignment="Bottom" Checked="checkBoxNotAllowRepeat_CheckedChanged" Unchecked="checkBoxNotAllowRepeat_CheckedChanged"/>
+            <CheckBox x:Name="checkBoxNotAllowDuplicate" Content="Deny Duplicate Characters         ...max 94 Chars" HorizontalAlignment="Left" Margin="6,0,0,97.44" VerticalAlignment="Bottom" Unchecked="checkBoxNotAllowDuplicate_CheckedChanged" Checked="checkBoxNotAllowDuplicate_CheckedChanged"/>
+            <CheckBox x:Name="checkBoxNotAllowGroupRepeat" Content="Deny Character Groups to repeat consecutively" Margin="6,0,0,76.48" VerticalAlignment="Bottom" HorizontalAlignment="Left" Checked="checkBoxNotAllowGroupRepeat_CheckedChanged" Unchecked="checkBoxNotAllowGroupRepeat_CheckedChanged"/>
+            <CheckBox x:Name="checkBoxBeginWithLetter" Content="Begin with a letter" HorizontalAlignment="Left" Margin="6,0,0,55.52" VerticalAlignment="Bottom"/>
         </Grid>
-        <Label x:Name="labelForPasswordStrength" Content="Password strength:" HorizontalAlignment="Left" Margin="27.666,289.667,0,0" VerticalAlignment="Top" d:IsLocked="True"/>
-        <Label x:Name="labelPasswordStrength" Content="" HorizontalAlignment="Left" Margin="137.832,289.667,0,0" VerticalAlignment="Top" Width="155.168" d:IsLocked="True"/>
-        <ProgressBar x:Name="progressBar1" HorizontalAlignment="Left" Height="30" Margin="10,315.627,0,0" VerticalAlignment="Top" Width="283" d:IsLocked="True"/>
+        <Grid HorizontalAlignment="Left" Height="107.333" Margin="10,332.667,0,0" VerticalAlignment="Top" Width="283" d:IsLocked="True">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="passGenButton" Content="Generate Password" Margin="66.565,67.333,66.232,0" Template="{DynamicResource Glow.Green}" Click="passGenButton_Click" FontSize="10.667" Foreground="White" d:LayoutOverrides="Width" Height="30" VerticalAlignment="Top"/>
+            <ProgressBar x:Name="progressBar1" Height="30" Margin="0,26.627,0,0" VerticalAlignment="Top"/>
 
-        <RichTextBox x:Name="passwordBox" Margin="298,10,10,10" IsReadOnlyCaretVisible="True" VerticalScrollBarVisibility="Auto" d:IsLocked="True">
+            <Label x:Name="labelForPasswordStrength" Content="Password strength:" Margin="17.666,0.666,155.167,0" VerticalAlignment="Top" d:LayoutOverrides="Width"/>
+            <Label x:Name="labelPasswordStrength" Content="" Margin="128.165,0.666,0,0" VerticalAlignment="Top"/>
+        </Grid>
+        <RichTextBox x:Name="passwordBox" Margin="298,10,10,10" VerticalScrollBarVisibility="Auto" IsReadOnlyCaretVisible="True" PreviewKeyDown="onPreviewKeyDownRTB">
             <FlowDocument/>
         </RichTextBox>
-        <Button x:Name="passGenButton" Content="Generate Password" Margin="78.867,350.627,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="153.848" Height="30" Template="{DynamicResource Glow.Green}" Click="passGenButton_Click" FontSize="10.667" Foreground="White" d:IsLocked="True"/>
 
     </Grid>
 </Window>
