@@ -160,11 +160,11 @@
             <CheckBox x:Name="checkBoxNotAllowGroupRepeat" Content="Deny Character Groups to repeat consecutively" Margin="6,0,0,76.48" VerticalAlignment="Bottom" HorizontalAlignment="Left" Checked="checkBoxNotAllowGroupRepeat_CheckedChanged" Unchecked="checkBoxNotAllowGroupRepeat_CheckedChanged"/>
             <CheckBox x:Name="checkBoxBeginWithLetter" Content="Begin with a letter" HorizontalAlignment="Left" Margin="6,0,0,55.52" VerticalAlignment="Bottom"/>
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="107.333" Margin="10,332.667,0,0" VerticalAlignment="Top" Width="283" d:IsLocked="True">
+        <Grid HorizontalAlignment="Left" Height="107.333" Margin="10,332.667,0,0" VerticalAlignment="Top" Width="283">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="passGenButton" Content="Generate Password" Margin="66.565,67.333,66.232,0" Template="{DynamicResource Glow.Green}" Click="passGenButton_Click" FontSize="10.667" Foreground="White" d:LayoutOverrides="Width" Height="30" VerticalAlignment="Top"/>
+            <Button x:Name="passGenButton" Content="Generate Password" VerticalAlignment="Top" Margin="66.565,67.333,66.232,0" Height="30" Click="passGenButton_Click"/>
             <ProgressBar x:Name="progressBar1" Height="30" Margin="0,26.627,0,0" VerticalAlignment="Top"/>
 
             <Label x:Name="labelForPasswordStrength" Content="Password strength:" Margin="17.666,0.666,155.167,0" VerticalAlignment="Top" d:LayoutOverrides="Width"/>
