@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
@@ -27,8 +28,13 @@ namespace Password_Generator
 
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
-            comboBox1.SelectedIndex = 0;
+            selectedLengthComboBox.SelectedIndex = 0;
             checkBoxIncludeLowerCase.IsChecked = true;
+        }
+
+        private int boolCount(params bool[] booleans)
+        {
+            return booleans.Count(b => b);
         }
 
         private void checkBoxNotAllowRepeat_CheckedChanged(object sender, RoutedEventArgs e)
@@ -117,12 +123,7 @@ namespace Password_Generator
 
         private void notAllowGroupRepeatDisableCheck()
         {
-            if (
-                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked) ||
-                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)checkBoxIncludeNumbers.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked) ||
-                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked && (bool)checkBoxIncludeSymbols.IsChecked) ||
-                ((bool)checkBoxIncludeLowerCase.IsChecked && (bool)checkBoxIncludeUpperCase.IsChecked && (bool)checkBoxIncludeNumbers.IsChecked && (bool)checkBoxIncludeSymbols.IsChecked)
-                )
+            if (boolCount((bool)checkBoxIncludeLowerCase.IsChecked, (bool)checkBoxIncludeUpperCase.IsChecked, (bool)checkBoxIncludeNumbers.IsChecked, (bool)checkBoxIncludeSymbols.IsChecked) > 1)
             {
                 checkBoxNotAllowGroupRepeat.IsEnabled = true;
             }
@@ -151,7 +152,8 @@ namespace Password_Generator
         private void textBoxSymbols_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             char key = Convert.ToChar(e.Text);
-            if (key == '!' || key == '"' || key == '\\'||
+            if (
+                key == '!' || key == '"' || key == '\\'||
                 key == ';' || key == '#' || key == '$' ||
                 key == '%' || key == '(' || key == '\''||
                 key == ')' || key == '&' || key == '*' ||
@@ -161,7 +163,8 @@ namespace Password_Generator
                 key == '?' || key == '[' || key == ']' ||
                 key == '@' || key == '^' || key == '_' ||
                 key == '{' || key == '}' || key == '|' ||
-                key == '`' || key == '~' || key == '\b')
+                key == '`' || key == '~' || key == '\b'
+               )
             {
                 if (!(textBoxSymbols.Text.Contains(e.Text)))
                 {
@@ -206,48 +209,48 @@ namespace Password_Generator
         private void updateProgressBar()
         {
             scoreCheck();
-            if (score > progressBar1.Maximum)
+            if (score > scoreBar.Maximum)
             {
-                score = progressBar1.Maximum;
+                score = scoreBar.Maximum;
             }
             if (score < 20)
             {
                 labelPasswordStrength.Content = "Very Weak";
-                progressBar1.Foreground = Brushes.DarkRed;
+                scoreBar.Foreground = Brushes.DarkRed;
             }
             else if (score >= 20 && score < 40)
             {
                 labelPasswordStrength.Content = "Weak";
-                progressBar1.Foreground = Brushes.Red;
+                scoreBar.Foreground = Brushes.Red;
             }
             else if (score >= 40 && score < 60)
             {
                 labelPasswordStrength.Content = "Good";
-                progressBar1.Foreground = Brushes.Orange;
+                scoreBar.Foreground = Brushes.Orange;
             }
             else if (score >= 60 && score < 80)
             {
                 labelPasswordStrength.Content = "Very Good";
-                progressBar1.Foreground = Brushes.Yellow;
+                scoreBar.Foreground = Brushes.Yellow;
             }
             else if (score >= 80 && score < 90)
             {
                 labelPasswordStrength.Content = "Strong";
-                progressBar1.Foreground = Brushes.YellowGreen;
+                scoreBar.Foreground = Brushes.YellowGreen;
             }
             else if (score <= 90 && score < 101)
             {
                 labelPasswordStrength.Content = "Very Strong";
-                progressBar1.Foreground = Brushes.GreenYellow;
+                scoreBar.Foreground = Brushes.GreenYellow;
             }
             else if (score <= 101)
             {
                 labelPasswordStrength.Content = "Crazy Strong";
-                progressBar1.Foreground = Brushes.Green;
+                scoreBar.Foreground = Brushes.Green;
             }
             // Wait 100 milliseconds.
             Thread.Sleep(100);
-            progressBar1.Value = (int)score;
+            scoreBar.Value = (int)score;
         }
 
         private void scoreCheck()
@@ -255,7 +258,7 @@ namespace Password_Generator
             ArrayList array = passwordBreakDown();
             score = 0;
             int temp = 0;
-            int length = int.Parse(comboBox1.SelectedItem.ToString());
+            int length = int.Parse(selectedLengthComboBox.SelectedItem.ToString());
             //Additions
             int numberOfCharactersScore = (length * 1);
             int numberOfLowerrcaseLettersScore = ((length - (int)array[0]) * 2);
@@ -335,7 +338,7 @@ namespace Password_Generator
 
         private bool sameGroupCheck(string newChar, string lastChar)
         {
-           if (lowerCase.Contains(lastChar) && lowerCase.Contains(newChar))
+            if (lowerCase.Contains(lastChar) && lowerCase.Contains(newChar))
             {
                 return true;
             }
@@ -367,7 +370,7 @@ namespace Password_Generator
             string password = "";
             ArrayList array = new ArrayList();
             string[] backup = new string[0];
-            int length = int.Parse(comboBox1.SelectedItem.ToString());
+            int length = int.Parse(selectedLengthComboBox.SelectedItem.ToString());
             if ((bool)checkBoxIncludeLowerCase.IsChecked)
             {
                 array.Add("a");
@@ -487,7 +490,7 @@ namespace Password_Generator
                 if (array.Count < length)
                 {
                     length = array.Count;
-                    comboBox1.SelectedIndex = (length - 4);
+                    selectedLengthComboBox.SelectedIndex = (length - 4);
                 }
                 if((bool)checkBoxNotAllowGroupRepeat.IsChecked)
                 {
