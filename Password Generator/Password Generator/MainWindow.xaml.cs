@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Password_Generator
 {
@@ -24,6 +15,10 @@ namespace Password_Generator
     public partial class MainWindow : Window
     {
         static Random rnd = new Random();
+        static string lowerCase = "abcdefghijklmnopqrstuvwxyz";
+        static string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        static string numbers = "1234567890";
+        static string symbols = "!" + "\"" + "\\" + "#$%'(&)*+,-./:;<=>?[@]^_`{|}~";
         public static double score = 0.0;
 
         public MainWindow()
@@ -33,14 +28,23 @@ namespace Password_Generator
 
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
-            comboBox1.SelectedIndex = 0;
+            selectedLengthComboBox.SelectedIndex = 0;
             checkBoxIncludeLowerCase.IsChecked = true;
+        }
+
+        private int boolCount(params bool[] booleans)
+        {
+            return booleans.Count(b => b);
         }
 
         private void checkBoxNotAllowRepeat_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxNotAllowRepeat.IsChecked)
             {
+                if ((bool)checkBoxNotAllowDuplicate.IsChecked)
+                {
+                    checkBoxNotAllowDuplicate.IsChecked = false;
+                }
                 checkBoxNotAllowDuplicate.IsEnabled = false;
             }
             else
@@ -53,14 +57,33 @@ namespace Password_Generator
         {
             if ((bool)checkBoxNotAllowDuplicate.IsChecked)
             {
+                if ((bool)checkBoxNotAllowRepeat.IsChecked)
+                {
+                    checkBoxNotAllowRepeat.IsChecked = false;
+                }
                 checkBoxNotAllowRepeat.IsEnabled = false;
             }
-            else
+            else if (!(bool)checkBoxNotAllowDuplicate.IsChecked && !(bool)checkBoxNotAllowGroupRepeat.IsChecked)
             {
                 checkBoxNotAllowRepeat.IsEnabled = true;
             }
         }
 
+        private void checkBoxNotAllowGroupRepeat_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if ((bool)checkBoxNotAllowGroupRepeat.IsChecked)
+            {
+                if ((bool)checkBoxNotAllowRepeat.IsChecked)
+                {
+                    checkBoxNotAllowRepeat.IsChecked = false;
+                }
+                checkBoxNotAllowRepeat.IsEnabled = false;
+            }
+            else if (!(bool)checkBoxNotAllowDuplicate.IsChecked && !(bool)checkBoxNotAllowGroupRepeat.IsChecked)
+            {
+                checkBoxNotAllowRepeat.IsEnabled = true;
+            }
+        }
 
         private void checkBoxIncludeLowerCase_Check(object sender, RoutedEventArgs e)
         {
@@ -72,6 +95,7 @@ namespace Password_Generator
             {
                 beginWithLetterDisable();
             }
+            notAllowGroupRepeatDisableCheck();
         }
 
         private void checkBoxIncludeUpperCase_Check(object sender, RoutedEventArgs e)
@@ -83,6 +107,33 @@ namespace Password_Generator
             else
             {
                 beginWithLetterDisable();
+            }
+            notAllowGroupRepeatDisableCheck();
+        }
+
+        private void checkBoxIncludeSymbols_Check(object sender, RoutedEventArgs e)
+        {
+            notAllowGroupRepeatDisableCheck();
+        }
+
+        private void checkBoxIncludeNumbers_Check(object sender, RoutedEventArgs e)
+        {
+            notAllowGroupRepeatDisableCheck();
+        }
+
+        private void notAllowGroupRepeatDisableCheck()
+        {
+            if (boolCount((bool)checkBoxIncludeLowerCase.IsChecked, (bool)checkBoxIncludeUpperCase.IsChecked, (bool)checkBoxIncludeNumbers.IsChecked, (bool)checkBoxIncludeSymbols.IsChecked) > 1)
+            {
+                checkBoxNotAllowGroupRepeat.IsEnabled = true;
+            }
+            else
+            {
+                if ((bool)checkBoxNotAllowGroupRepeat.IsChecked)
+                {
+                    checkBoxNotAllowGroupRepeat.IsChecked = false;
+                }
+                checkBoxNotAllowGroupRepeat.IsEnabled = false;
             }
         }
 
@@ -101,7 +152,8 @@ namespace Password_Generator
         private void textBoxSymbols_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             char key = Convert.ToChar(e.Text);
-            if (key == '!' || key == '"' || key == '\\'||
+            if (
+                key == '!' || key == '"' || key == '\\'||
                 key == ';' || key == '#' || key == '$' ||
                 key == '%' || key == '(' || key == '\''||
                 key == ')' || key == '&' || key == '*' ||
@@ -111,7 +163,8 @@ namespace Password_Generator
                 key == '?' || key == '[' || key == ']' ||
                 key == '@' || key == '^' || key == '_' ||
                 key == '{' || key == '}' || key == '|' ||
-                key == '`' || key == '~' || key == '\b')
+                key == '`' || key == '~' || key == '\b'
+               )
             {
                 if (!(textBoxSymbols.Text.Contains(e.Text)))
                 {
@@ -128,51 +181,76 @@ namespace Password_Generator
             }
         }
 
+        private void onPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+            {
+                e.Handled = true;
+            }
+            base.OnPreviewKeyDown(e);
+        }
+        private void onPreviewKeyDownRTB(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.A && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                e.Handled = false;
+            }
+            else if (e.Key == Key.C && Keyboard.Modifiers == ModifierKeys.Control)
+            {
+                e.Handled = false;
+            }
+            else
+            {
+                e.Handled = true;
+            }
+            base.OnPreviewKeyDown(e);
+        }
+
         private void updateProgressBar()
         {
             scoreCheck();
-            if (score > progressBar1.Maximum)
+            if (score > scoreBar.Maximum)
             {
-                score = progressBar1.Maximum;
+                score = scoreBar.Maximum;
             }
             if (score < 20)
             {
                 labelPasswordStrength.Content = "Very Weak";
-                progressBar1.Foreground = Brushes.DarkRed;
+                scoreBar.Foreground = Brushes.DarkRed;
             }
             else if (score >= 20 && score < 40)
             {
                 labelPasswordStrength.Content = "Weak";
-                progressBar1.Foreground = Brushes.Red;
+                scoreBar.Foreground = Brushes.Red;
             }
             else if (score >= 40 && score < 60)
             {
                 labelPasswordStrength.Content = "Good";
-                progressBar1.Foreground = Brushes.Orange;
+                scoreBar.Foreground = Brushes.Orange;
             }
             else if (score >= 60 && score < 80)
             {
                 labelPasswordStrength.Content = "Very Good";
-                progressBar1.Foreground = Brushes.Yellow;
+                scoreBar.Foreground = Brushes.Yellow;
             }
             else if (score >= 80 && score < 90)
             {
                 labelPasswordStrength.Content = "Strong";
-                progressBar1.Foreground = Brushes.YellowGreen;
+                scoreBar.Foreground = Brushes.YellowGreen;
             }
             else if (score <= 90 && score < 101)
             {
                 labelPasswordStrength.Content = "Very Strong";
-                progressBar1.Foreground = Brushes.GreenYellow;
+                scoreBar.Foreground = Brushes.GreenYellow;
             }
             else if (score <= 101)
             {
                 labelPasswordStrength.Content = "Crazy Strong";
-                progressBar1.Foreground = Brushes.Green;
+                scoreBar.Foreground = Brushes.Green;
             }
             // Wait 100 milliseconds.
             Thread.Sleep(100);
-            progressBar1.Value = (int)score;
+            scoreBar.Value = (int)score;
         }
 
         private void scoreCheck()
@@ -180,7 +258,7 @@ namespace Password_Generator
             ArrayList array = passwordBreakDown();
             score = 0;
             int temp = 0;
-            int length = int.Parse(comboBox1.SelectedItem.ToString());
+            int length = int.Parse(selectedLengthComboBox.SelectedItem.ToString());
             //Additions
             int numberOfCharactersScore = (length * 1);
             int numberOfLowerrcaseLettersScore = ((length - (int)array[0]) * 2);
@@ -258,6 +336,30 @@ namespace Password_Generator
             return array;
         }
 
+        private bool sameGroupCheck(string newChar, string lastChar)
+        {
+            if (lowerCase.Contains(lastChar) && lowerCase.Contains(newChar))
+            {
+                return true;
+            }
+            else if (upperCase.Contains(lastChar) && upperCase.Contains(newChar))
+            {
+                return true;
+            }
+            else if (numbers.Contains(lastChar) && numbers.Contains(newChar))
+            {
+                return true;
+            }
+            else if (symbols.Contains(lastChar) && symbols.Contains(newChar))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void passGenButton_Click(object sender, RoutedEventArgs e)
         {
             if (((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) || ((bool)checkBoxIncludeSymbols.IsChecked && textBoxSymbols.Text.Length == 0 && (bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked))
@@ -266,8 +368,9 @@ namespace Password_Generator
                 return;
             }
             string password = "";
-            int length = int.Parse(comboBox1.SelectedItem.ToString());
             ArrayList array = new ArrayList();
+            string[] backup = new string[0];
+            int length = int.Parse(selectedLengthComboBox.SelectedItem.ToString());
             if ((bool)checkBoxIncludeLowerCase.IsChecked)
             {
                 array.Add("a");
@@ -381,50 +484,91 @@ namespace Password_Generator
                 array.Remove("<");
                 array.Remove(">");
             }
-            if ((bool)checkBoxNotAllowDuplicate.IsChecked && array.Count < length)
+            if ((bool)checkBoxNotAllowDuplicate.IsChecked)
             {
-                length = array.Count;
-                comboBox1.SelectedIndex = (length - 4);
-            }
-            for (int i = 0; i < length; i++)
-            {
-                int j = rnd.Next(array.Count);
-                if (((bool)checkBoxNotAllowRepeat.IsChecked) && (password.Length > 0))
+                backup = new string[array.Count];
+                if (array.Count < length)
                 {
-                    if (password.EndsWith(array[j].ToString()))
+                    length = array.Count;
+                    selectedLengthComboBox.SelectedIndex = (length - 4);
+                }
+                if((bool)checkBoxNotAllowGroupRepeat.IsChecked)
+                {
+                    for (int i = 0; i < array.Count; i++)
                     {
-                        i--;
-                    }
-                    else
-                    {
-                        password = password + array[j].ToString();
+                        backup[i] = (array[i].ToString());
                     }
                 }
-                else if (((bool)checkBoxNotAllowDuplicate.IsChecked) && (password.Length > 0))
+            }
+            int j;
+            bool adding;
+            int loopedTimes = 0;
+            for (int i = 0; i < length;)
+            {
+                if(loopedTimes == 25 && (bool)checkBoxNotAllowGroupRepeat.IsChecked)
                 {
-                    if (password.Contains(array[j].ToString()))
+                    password = "";
+                    i = 0;
+                    array.Clear();
+                    for (int x = 0; x < length; x++)
                     {
-                        i--;
+                        array.Add(backup[x]);
                     }
-                    else
+                }
+                j = rnd.Next(array.Count);
+                adding = false;
+                if (((bool)checkBoxNotAllowRepeat.IsChecked) && (password.Length > 0))
+                {
+                    if (!password.EndsWith(array[j].ToString()))
                     {
-                        password = password + array[j].ToString();
+                        adding = true;
+                    }
+                }
+                else if (((bool)checkBoxNotAllowDuplicate.IsChecked) && (password.Length > 0) && !(bool)checkBoxNotAllowGroupRepeat.IsChecked)
+                {
+                    if (!password.Contains(array[j].ToString()))
+                    {
+                        adding = true;
+                    }
+                }
+                else if (((bool)checkBoxNotAllowDuplicate.IsChecked) && (password.Length > 0) && (bool)checkBoxNotAllowGroupRepeat.IsChecked)
+                {
+                    if (!password.Contains(array[j].ToString()) && !sameGroupCheck(array[j].ToString(), password.Substring(i - 1)))
+                    {
+                        adding = true;
+                    }
+                }
+                else if((bool)checkBoxNotAllowGroupRepeat.IsChecked && (password.Length > 0) && !(bool)checkBoxNotAllowDuplicate.IsChecked)
+                {
+                    if (!sameGroupCheck(array[j].ToString(), password.Substring(i - 1)))
+                    {
+                        adding = true;
                     }
                 }
                 else if (((bool)checkBoxBeginWithLetter.IsChecked) && (password.Length == 0))
                 {
                     if (Char.IsLetter(((array[j].ToString()).ToCharArray()[0])))
                     {
-                        password = password + array[j].ToString();
-                    }
-                    else
-                    {
-                        i--;
+                        adding = true;
                     }
                 }
                 else
                 {
+                    adding = true;
+                }
+                if (adding)
+                {
+                    loopedTimes = 0;
+                    i++;
                     password = password + array[j].ToString();
+                    if ((bool)checkBoxNotAllowDuplicate.IsChecked)
+                    {
+                        array.RemoveAt(j);
+                    }
+                }
+                else
+                {
+                    loopedTimes++;
                 }
             }
             passwordBox.Document.Blocks.Clear();
@@ -432,4 +576,4 @@ namespace Password_Generator
             updateProgressBar();
         }
     }
-}
+} 

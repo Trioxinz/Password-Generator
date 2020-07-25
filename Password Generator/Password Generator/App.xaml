@@ -4,12 +4,5 @@
              xmlns:local="clr-namespace:Password_Generator"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="GlassGlow.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-
     </Application.Resources>
 </Application>
