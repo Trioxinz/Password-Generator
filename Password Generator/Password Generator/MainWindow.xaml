@@ -10,7 +10,7 @@
     <Grid>
         <Grid HorizontalAlignment="Left" Margin="10,10,0,0" Width="283" Height="317.667" VerticalAlignment="Top" d:LayoutOverrides="HorizontalAlignment">
             <Label x:Name="labelLength" Content="Length:&#xD;&#xA;" HorizontalAlignment="Left" VerticalAlignment="Top" Width="49.24" Height="26.587"/>
-            <ComboBox x:Name="comboBox1" Margin="54.24,4.627,138.76,0" VerticalAlignment="Top">
+            <ComboBox x:Name="selectedLengthComboBox" Margin="54.24,4.627,138.76,0" VerticalAlignment="Top">
                 <System:String>4</System:String>
                 <System:String>5</System:String>
                 <System:String>6</System:String>
@@ -160,12 +160,12 @@
             <CheckBox x:Name="checkBoxNotAllowGroupRepeat" Content="Deny Character Groups to repeat consecutively" Margin="6,0,0,76.48" VerticalAlignment="Bottom" HorizontalAlignment="Left" Checked="checkBoxNotAllowGroupRepeat_CheckedChanged" Unchecked="checkBoxNotAllowGroupRepeat_CheckedChanged"/>
             <CheckBox x:Name="checkBoxBeginWithLetter" Content="Begin with a letter" HorizontalAlignment="Left" Margin="6,0,0,55.52" VerticalAlignment="Bottom"/>
         </Grid>
-        <Grid HorizontalAlignment="Left" Height="107.333" Margin="10,332.667,0,0" VerticalAlignment="Top" Width="283" d:IsLocked="True">
+        <Grid HorizontalAlignment="Left" Height="107.333" Margin="10,332.667,0,0" VerticalAlignment="Top" Width="283">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="passGenButton" Content="Generate Password" Margin="66.565,67.333,66.232,0" Template="{DynamicResource Glow.Green}" Click="passGenButton_Click" FontSize="10.667" Foreground="White" d:LayoutOverrides="Width" Height="30" VerticalAlignment="Top"/>
-            <ProgressBar x:Name="progressBar1" Height="30" Margin="0,26.627,0,0" VerticalAlignment="Top"/>
+            <Button x:Name="passGenButton" Content="Generate Password" VerticalAlignment="Top" Margin="66.565,67.333,66.232,0" Height="30" Click="passGenButton_Click"/>
+            <ProgressBar x:Name="scoreBar" Height="30" Margin="0,26.627,0,0" VerticalAlignment="Top"/>
 
             <Label x:Name="labelForPasswordStrength" Content="Password strength:" Margin="17.666,0.666,155.167,0" VerticalAlignment="Top" d:LayoutOverrides="Width"/>
             <Label x:Name="labelPasswordStrength" Content="" Margin="128.165,0.666,0,0" VerticalAlignment="Top"/>
