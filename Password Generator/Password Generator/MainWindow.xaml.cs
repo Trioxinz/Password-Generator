@@ -28,8 +28,16 @@ namespace Password_Generator
 
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
-            selectedLengthComboBox.SelectedIndex = 0;
+            selectedLengthComboBox.SelectedIndex = 12;
             checkBoxIncludeLowerCase.IsChecked = true;
+            checkBoxIncludeUpperCase.IsChecked = true;
+            checkBoxIncludeNumbers.IsChecked = true;
+            checkBoxIncludeSymbols.IsChecked = true;
+            checkBoxExcludeSimilar.IsChecked = true;
+            checkBoxExcludeAmbiguous.IsChecked = true;
+            checkBoxNotAllowDuplicate.IsChecked = true;
+            checkBoxNotAllowGroupRepeat.IsChecked = true;
+            checkBoxBeginWithLetter.IsChecked = true;
         }
 
         private int boolCount(params bool[] booleans)
