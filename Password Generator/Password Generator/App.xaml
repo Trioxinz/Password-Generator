@@ -4,5 +4,12 @@
              xmlns:local="clr-namespace:Password_Generator"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/Dark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Other App-level items -->
+       </ResourceDictionary>
     </Application.Resources>
 </Application>

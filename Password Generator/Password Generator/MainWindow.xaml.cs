@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 
 namespace Password_Generator
@@ -14,6 +16,7 @@ namespace Password_Generator
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Constants
         static Random rnd = new Random();
         static string lowerCase = "abcdefghijklmnopqrstuvwxyz";
         static string upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -21,11 +24,200 @@ namespace Password_Generator
         static string symbols = "!" + "\"" + "\\" + "#$%'(&)*+,-./:;<=>?[@]^_`{|}~";
         public static double score = 0.0;
 
+        // Constants For Titlebar Color change
+        private const int WM_SETTINGCHANGE = 0x1A;
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1 = 19;
+        private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+        private const int DWMWA_CAPTION_COLOR = 34;
+        private const int DWMWA_BORDER_COLOR = 35;
+        private const uint KEY_QUERY_VALUE = 0x0001;
+        private static readonly IntPtr HKEY_CURRENT_USER = new IntPtr(unchecked((int)0x80000001));
+        const uint SWP_NOSIZE = 0x0001;
+        const uint SWP_NOMOVE = 0x0002;
+        const uint SWP_NOZORDER = 0x0004;
+        const uint SWP_FRAMECHANGED = 0x0020;
+
+        // P/Invoke declarations
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmSetWindowAttribute(IntPtr hwnd, int dwAttribute, ref int pvAttribute, int cbAttribute);
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Auto)]
+        private static extern int RegOpenKeyEx(IntPtr hKey, string subKey, int ulOptions, uint samDesired, out IntPtr hkResult);
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Auto)]
+        private static extern int RegQueryValueEx(IntPtr hKey, string lpValueName, int lpReserved, int lpType, ref int lpData, ref int lpcbData);
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Auto)]
+        private static extern int RegCloseKey(IntPtr hKey);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        /// <summary>
+        /// Initializes the main window and sets up the theme listener.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+            SourceInitialized += (s, e) => initializeThemeListener();
         }
 
+        /// <summary>
+        /// Sets up a Windows message hook to listen for system theme changes.
+        /// </summary>
+        private void initializeThemeListener()
+        {
+            IntPtr hwnd = new WindowInteropHelper(this).Handle;
+            HwndSource hwndSource = HwndSource.FromHwnd(hwnd);
+            if (hwndSource != null)
+            {
+                hwndSource.AddHook(WndProc);
+            }
+
+            applyThemeAwareTitleBar();
+        }
+
+        /// <summary>
+        /// Processes Windows messages and updates the title bar when the system theme changes.
+        /// </summary>
+        /// <param name="hwnd">The window handle.</param>
+        /// <param name="msg">The message identifier.</param>
+        /// <param name="wParam">Additional message information.</param>
+        /// <param name="lParam">Additional message information.</param>
+        /// <param name="handled">Indicates whether the message was handled.</param>
+        /// <returns>An IntPtr representing the result.</returns>
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == WM_SETTINGCHANGE)
+            {
+                string param = Marshal.PtrToStringAuto(lParam);
+                if (param == "ImmersiveColorSet")
+                {
+                    applyThemeAwareTitleBar();
+                }
+            }
+
+            return IntPtr.Zero;
+        }
+
+        /// <summary>
+        /// Applies the appropriate title bar color and theme settings based on the Windows version and system theme.
+        /// </summary>
+        private void applyThemeAwareTitleBar()
+        {
+            WindowsVersion windowsVersion = getWindowsVersion();
+            if (windowsVersion >= WindowsVersion.Windows10Pre20H1)
+            {
+                IntPtr handle = new WindowInteropHelper(this).Handle;
+                int darkMode = systemThemeIsDark() ? 1 : 0;
+                if (windowsVersion == WindowsVersion.Windows10Pre20H1)
+                {
+                    DwmSetWindowAttribute(handle, DWMWA_USE_IMMERSIVE_DARK_MODE_BEFORE_20H1, ref darkMode, Marshal.SizeOf(darkMode));
+                }
+                else
+                {
+                    DwmSetWindowAttribute(handle, DWMWA_USE_IMMERSIVE_DARK_MODE, ref darkMode, Marshal.SizeOf(darkMode));
+                }
+
+                if (windowsVersion >= WindowsVersion.Windows11)
+                {
+                    int color = systemThemeIsDark() ? unchecked((int)0xFF000000) : unchecked((int)0xFFFFFFFF); // Black for dark, White for light
+                    DwmSetWindowAttribute(handle, DWMWA_CAPTION_COLOR, ref color, Marshal.SizeOf(color));
+                    DwmSetWindowAttribute(handle, DWMWA_BORDER_COLOR, ref color, Marshal.SizeOf(color));
+                }
+
+                // Force window redraw
+                SetWindowPos(handle, IntPtr.Zero, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_FRAMECHANGED);
+            }
+        }
+
+        /// <summary>
+        /// Enum representing different versions of Windows.
+        /// </summary>
+        public enum WindowsVersion
+        {
+            Unsupported,
+            Windows7,
+            Windows8,
+            Windows10Pre20H1,
+            Windows10After20H1,
+            Windows11
+        }
+
+        /// <summary>
+        /// Determines the current version of Windows.
+        /// </summary>
+        /// <returns>A WindowsVersion enum value representing the detected Windows version.</returns>
+        private WindowsVersion getWindowsVersion()
+        {
+            Version version = Environment.OSVersion.Version;
+
+            if (version.Major == 5 && version.Minor == 1)
+            {
+                //Windows XP
+                return WindowsVersion.Unsupported;
+            }
+            else if (version.Major == 6 && version.Minor == 0)
+            {
+                //Windows Vista
+                return WindowsVersion.Unsupported;
+            }
+            else if (version.Major == 6 && version.Minor == 1)
+            {
+                //Windows 7
+                return WindowsVersion.Windows7;
+            }
+            else if (version.Major == 6 && (version.Minor == 2 || version.Minor == 3))
+            {
+                //Windows 8   Minor = 2
+                //Windows 8.1 Minor = 3
+                return WindowsVersion.Windows8;
+            }
+            else if (version.Major == 10 && (version.Build < 18985 && version.Build >= 17763))
+            {
+                //Windows 10 Pre 20H1
+                return WindowsVersion.Windows10Pre20H1;
+            }
+            else if (version.Major == 10 && (version.Build < 22000 && version.Build >= 18985))
+            {
+                //Windows 10 Pre 20H1
+                return WindowsVersion.Windows10After20H1;
+            }
+            else if (version.Major == 10 && version.Build >= 22000)
+            {
+                //Windows 10 Pre 20H1
+                return WindowsVersion.Windows11;
+            }
+            else
+            {
+                //Version Not Found
+                return WindowsVersion.Unsupported;
+            }
+        }
+
+        /// <summary>
+        /// Checks if the system is currently using Dark Mode.
+        /// </summary>
+        /// <returns>True if the system theme is dark; otherwise, false.</returns>
+
+        private bool systemThemeIsDark()
+        {
+            int isDarkMode = 0;
+            int size = Marshal.SizeOf(typeof(int));
+            var result = RegOpenKeyEx(HKEY_CURRENT_USER, @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize", 0, KEY_QUERY_VALUE, out IntPtr hKey);
+
+            if (result == 0)
+            {
+                RegQueryValueEx(hKey, "AppsUseLightTheme", 0, 0, ref isDarkMode, ref size);
+                RegCloseKey(hKey);
+            }
+
+            return isDarkMode == 0; // 0 means Dark Mode, 1 means Light Mode
+        }
+
+        /// <summary>
+        /// Initializes default checkbox states when the window loads.
+        /// </summary>
         private void mainWindow_Loaded(object sender, EventArgs e)
         {
             selectedLengthComboBox.SelectedIndex = 12;
@@ -40,11 +232,17 @@ namespace Password_Generator
             checkBoxBeginWithLetter.IsChecked = true;
         }
 
+        /// <summary>
+        /// Counts the number of boolean values that are true.
+        /// </summary>
         private int boolCount(params bool[] booleans)
         {
             return booleans.Count(b => b);
         }
 
+        /// <summary>
+        /// Ensures that Not Allow Repeat and Not Allow Duplicate are not enabled together.
+        /// </summary>
         private void checkBoxNotAllowRepeat_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxNotAllowRepeat.IsChecked)
@@ -61,6 +259,9 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Ensures mutual exclusivity between Not Allow Duplicate and Not Allow Repeat.
+        /// </summary>
         private void checkBoxNotAllowDuplicate_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxNotAllowDuplicate.IsChecked)
@@ -77,6 +278,11 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Handles the CheckedChanged event for checkBoxNotAllowGroupRepeat.
+        /// Ensures that Not Allow Group Repeat and Not Allow Repeat are not enabled together,
+        /// based on user selection.
+        /// </summary>
         private void checkBoxNotAllowGroupRepeat_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxNotAllowGroupRepeat.IsChecked)
@@ -93,6 +299,9 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Validates and applies settings when the Include Lowercase checkbox is checked.
+        /// </summary>
         private void checkBoxIncludeLowerCase_Check(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxIncludeLowerCase.IsChecked)
@@ -106,6 +315,9 @@ namespace Password_Generator
             notAllowGroupRepeatDisableCheck();
         }
 
+        /// <summary>
+        /// Validates and applies settings when the Include Uppercase checkbox is checked.
+        /// </summary>
         private void checkBoxIncludeUpperCase_Check(object sender, RoutedEventArgs e)
         {
             if ((bool)checkBoxIncludeUpperCase.IsChecked)
@@ -119,16 +331,26 @@ namespace Password_Generator
             notAllowGroupRepeatDisableCheck();
         }
 
+        /// <summary>
+        /// Validates and applies settings when the Include Symbols checkbox is checked.
+        /// </summary>
         private void checkBoxIncludeSymbols_Check(object sender, RoutedEventArgs e)
         {
             notAllowGroupRepeatDisableCheck();
         }
 
+        /// <summary>
+        /// Validates and applies settings when the Include Numbers checkbox is checked.
+        /// </summary>
         private void checkBoxIncludeNumbers_Check(object sender, RoutedEventArgs e)
         {
             notAllowGroupRepeatDisableCheck();
         }
 
+
+        /// <summary>
+        /// Disables related settings when Not Allow Group Repeat is disabled.
+        /// </summary>
         private void notAllowGroupRepeatDisableCheck()
         {
             if (boolCount((bool)checkBoxIncludeLowerCase.IsChecked, (bool)checkBoxIncludeUpperCase.IsChecked, (bool)checkBoxIncludeNumbers.IsChecked, (bool)checkBoxIncludeSymbols.IsChecked) > 1)
@@ -145,6 +367,9 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Disables Begin With Letter option if neither lowercase nor uppercase letters are included.
+        /// </summary>
         private void beginWithLetterDisable()
         {
             if ((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked)
@@ -157,6 +382,10 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Handles preview text input events for the Symbols text box.
+        /// Ensures only valid symbol characters are accepted.
+        /// </summary>
         private void textBoxSymbols_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             char key = Convert.ToChar(e.Text);
@@ -189,6 +418,11 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Handles preview key down events.
+        /// Implements custom key-handling logic.
+        /// This will block space presses
+        /// </summary>
         private void onPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Space)
@@ -197,6 +431,13 @@ namespace Password_Generator
             }
             base.OnPreviewKeyDown(e);
         }
+
+        /// <summary>
+        /// Handles preview key down events for a RichTextBox control.
+        /// Implements custom key-handling logic specific to the RichTextBox.
+        /// Blocks all key presses unless (ctrl+A) or (ctrl+C) is pressed.
+        /// This will allow the user to easily copy the generated password from the application.
+        /// </summary>
         private void onPreviewKeyDownRTB(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.A && Keyboard.Modifiers == ModifierKeys.Control)
@@ -214,6 +455,9 @@ namespace Password_Generator
             base.OnPreviewKeyDown(e);
         }
 
+        /// <summary>
+        /// Updates the password strength indicator based on computed score.
+        /// </summary>
         private void updateProgressBar()
         {
             scoreCheck();
@@ -261,6 +505,9 @@ namespace Password_Generator
             scoreBar.Value = (int)score;
         }
 
+        /// <summary>
+        /// Evaluates and assigns a score based on specific criteria.
+        /// </summary>
         private void scoreCheck()
         {
             ArrayList array = passwordBreakDown();
@@ -297,6 +544,9 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Analyzes the breakdown of character types in the generated password.
+        /// </summary>
         private ArrayList passwordBreakDown()
         {
             ArrayList array = new ArrayList();
@@ -344,6 +594,9 @@ namespace Password_Generator
             return array;
         }
 
+        /// <summary>
+        /// Checks if the same character group is being used.
+        /// </summary>
         private bool sameGroupCheck(string newChar, string lastChar)
         {
             if (lowerCase.Contains(lastChar) && lowerCase.Contains(newChar))
@@ -368,6 +621,9 @@ namespace Password_Generator
             }
         }
 
+        /// <summary>
+        /// Generates a password based on selected criteria.
+        /// </summary>
         private void passGenButton_Click(object sender, RoutedEventArgs e)
         {
             if (((bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeSymbols.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked) || ((bool)checkBoxIncludeSymbols.IsChecked && textBoxSymbols.Text.Length == 0 && (bool)!checkBoxIncludeLowerCase.IsChecked && (bool)!checkBoxIncludeUpperCase.IsChecked && (bool)!checkBoxIncludeNumbers.IsChecked))
